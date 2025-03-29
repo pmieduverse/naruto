@@ -392,12 +392,12 @@
             "Diamond", "Octagon", "Cross", "Wave", "Arrow", "Cloud", "Flame", "Drop",
             "Lightning", "Skull", "Heart", "Infinity"
         ];
-    
+
         const extraShapes = [
             "Galaxy", "Comet", "Nebula", "Supernova", "Black Hole", "Pulsar", "Quasar",
             "Asteroid", "Meteor", "Constellation"
         ];
-    
+
         const basePowers = [
             "Stellar Energy Blaster", "Temporal Sniper", "Elemental Fortress", "Thunder Sprinter",
             "Crystal Necromancer", "Sonic Inferno", "Empathic Healer", "Storm Archer",
@@ -405,7 +405,7 @@
             "Dark Thunder Pyre", "Eternal Velocity Surge", "Crystal Sanctuary", "Tempest Marksman",
             "Aqua Empath", "Electric Precision Strike", "Infernal Time Reaper", "Boundless Shadow Colossus"
         ];
-    
+
         const bonusPowers = [
             "Dragon Sovereign", "Void Whisperer", "Celestial Overlord", "Phantom Monarch",
             "Eternal Samurai", "Chaos Weaver", "Titan’s Roar", "Astral Sage", "Blood Reaper",
@@ -413,14 +413,14 @@
             "Puddle Jumper", "Nap Master", "Clumsy Knight", "Toast Mage", "Squeaky Voice",
             "Paper Cut Lord", "Shiny Rock Collector"
         ];
-    
+
         let currentStep = 1;
         let playerData = {};
-    
+
         function startGame() {
             const name = document.getElementById("playerName").value.trim();
             if (!name) return alert("Please enter your name!");
-    
+
             // Calculate Rank
             let sum = 0;
             for (let char of name.toUpperCase()) {
@@ -430,7 +430,7 @@
             sum += luckyNumber;
             const avg = sum / (name.length + luckyNumber.toString().length);
             let rank;
-    
+
             // Determine rank with rare ranks included
             const luckyNumberSum = luckyNumber.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
             if (luckyNumber.toString().includes('0')) {
@@ -440,22 +440,22 @@
             } else {
                 rank = avg <= 4 ? "G" : avg <= 8 ? "F" : avg <= 12 ? "E" : avg <= 16 ? "D" : avg <= 20 ? "C" : avg <= 24 ? "B" : "A";
             }
-    
+
             playerData = { name, rank, luckyNumber };
             document.getElementById("rankResult").innerText = `${name}, Your Rank: ${rank}`;
             switchStep(2);
         }
-    
+
         function showLuckyNumber() {
             const luckyNumber = playerData.luckyNumber;
             const luckyNumberStr = luckyNumber.toString();
             let selectedShapes = [];
-    
+
             // Assign shapes based on lucky number digits
             for (let digit of luckyNumberStr) {
                 selectedShapes.push(shapes[parseInt(digit) - 1]);
             }
-    
+
             // Assign extra shapes for Legendary and Mythic ranks
             if (playerData.rank === "Legendary" || playerData.rank === "Mythic") {
                 const extraShapeCount = playerData.rank === "Legendary" ? 1 : 2;
@@ -463,31 +463,31 @@
                     selectedShapes.push(extraShapes[Math.floor(Math.random() * extraShapes.length)]);
                 }
             }
-    
+
             playerData.shapes = selectedShapes;
             document.getElementById("luckyNumber").innerText = `Lucky Number: ${luckyNumber}`;
             const shapesContainer = document.getElementById("shapesResult");
             shapesContainer.innerHTML = selectedShapes.map(shape => `<div class="shape">${shape}</div>`).join("");
             switchStep(3);
         }
-    
+
         function showPower() {
             // Calculate base power index using lucky number and name sum
             const nameSum = playerData.name.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
             const powerIndex = (playerData.luckyNumber + nameSum) % basePowers.length;
-            playerData.power = basePowers[powerIndex];
+            playerData.power = basePowers[powerIndex] || getRandomPower(basePowers);
             document.getElementById("powerResult").innerText = `Power: ${playerData.power}`;
             switchStep(4);
         }
-    
+
         function showBonus() {
             // Sum the digits of the lucky number
             const luckyNumberSum = playerData.luckyNumber.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
-            playerData.bonus = bonusPowers[luckyNumberSum % bonusPowers.length];
+            playerData.bonus = bonusPowers[luckyNumberSum % bonusPowers.length] || getRandomPower(bonusPowers);
             document.getElementById("bonusResult").innerText = `Bonus Power: ${playerData.bonus}`;
             switchStep(5);
         }
-    
+
         function showFinalCard() {
             const card = document.getElementById("finalCard");
             card.innerHTML = `
@@ -500,35 +500,35 @@
             `;
             switchStep(6);
         }
-    
+
         function resetGame() {
             playerData = {};
             switchStep(1);
             document.getElementById("playerName").value = "";
         }
-    
+
         function switchStep(step) {
             document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
             document.getElementById(`step${step}`).classList.add("active");
             currentStep = step;
             updateProgressBar();
         }
-    
+
         function updateProgressBar() {
             const progress = document.getElementById("progress");
             progress.style.width = `${(currentStep / 6) * 100}%`;
         }
-    
+
         function toggleManualSearch() {
             const manualSearchContainer = document.getElementById("manualSearchContainer");
             manualSearchContainer.classList.toggle("active");
         }
-    
+
         function manualSearch() {
             const name = document.getElementById("manualName").value.trim();
             const luckyNumber = parseInt(document.getElementById("manualLuckyNumber").value.trim());
             if (!name || isNaN(luckyNumber)) return alert("Please enter valid name and lucky number!");
-    
+
             // Calculate Rank
             let sum = 0;
             for (let char of name.toUpperCase()) {
@@ -537,7 +537,7 @@
             sum += luckyNumber;
             const avg = sum / (name.length + luckyNumber.toString().length);
             let rank;
-    
+
             // Determine rank with rare ranks included
             const luckyNumberSum = luckyNumber.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
             if (luckyNumber.toString().includes('0')) {
@@ -547,14 +547,14 @@
             } else {
                 rank = avg <= 4 ? "G" : avg <= 8 ? "F" : avg <= 12 ? "E" : avg <= 16 ? "D" : avg <= 20 ? "C" : avg <= 24 ? "B" : "A";
             }
-    
+
             // Assign shapes based on lucky number digits
             let selectedShapes = [];
             const luckyNumberStr = luckyNumber.toString();
             for (let digit of luckyNumberStr) {
                 selectedShapes.push(shapes[parseInt(digit) - 1]);
             }
-    
+
             // Assign extra shapes for Legendary and Mythic ranks
             if (rank === "Legendary" || rank === "Mythic") {
                 const extraShapeCount = rank === "Legendary" ? 1 : 2;
@@ -562,15 +562,15 @@
                     selectedShapes.push(extraShapes[Math.floor(Math.random() * extraShapes.length)]);
                 }
             }
-    
+
             // Calculate base power index using lucky number and name sum
             const nameSum = name.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
             const powerIndex = (luckyNumber + nameSum) % basePowers.length;
-            const power = basePowers[powerIndex];
-    
+            const power = basePowers[powerIndex] || getRandomPower(basePowers);
+
             // Sum the digits of the lucky number
-            const bonus = bonusPowers[luckyNumberSum % bonusPowers.length];
-    
+            const bonus = bonusPowers[luckyNumberSum % bonusPowers.length] || getRandomPower(bonusPowers);
+
             document.getElementById("manualResult").innerHTML = `
                 <h3>${name}'s Power Card</h3>
                 <p>Rank: ${rank}</p>
@@ -580,23 +580,27 @@
                 <p>Bonus Power: ${bonus}</p>
             `;
         }
-    
+
+        function getRandomPower(powers) {
+            return powers[Math.floor(Math.random() * powers.length)];
+        }
+
         // Add sound effects and background music
         const clickSound = new Audio('path/to/click.mp3');
         const backgroundMusic = new Audio('path/to/background.mp3');
         backgroundMusic.loop = true;
         backgroundMusic.volume = 0.5;
-    
+
         document.querySelectorAll('button').forEach(button => {
             button.addEventListener('click', () => {
                 clickSound.play();
             });
         });
-    
+
         document.addEventListener('DOMContentLoaded', () => {
             backgroundMusic.play();
         });
-    
+
         // Add mute functionality
         document.addEventListener('keydown', (event) => {
             if (event.key === 'm') {
