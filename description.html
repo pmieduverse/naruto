@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Descriptions - Gaming Interface</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            color: #ff6f61;
+            animation: glow 1.5s infinite;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline;
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 1.2em;
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #ff6f61;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+
+        nav ul li a:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .search-bar {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            width: 300px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        main {
+            margin-top: 20px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            color: #ff6f61;
+            border-bottom: 2px solid #ff6f61;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background: #1e1e1e;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 8px;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        li:hover {
+            transform: translateY(-5px);
+            background-color: #2a2a2a;
+        }
+
+        li strong {
+            color: #ff6f61;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 20px #ff6f61, 0 0 30px #ff6f61, 0 0 40px #ff6f61, 0 0 50px #ff6f61, 0 0 60px #ff6f61;
+            }
+            50% {
+                text-shadow: 0 0 30px #ff6f61, 0 0 40px #ff6f61, 0 0 50px #ff6f61, 0 0 60px #ff6f61, 0 0 70px #ff6f61;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Power Descriptions</h1>
+            <nav>
+                <ul>
+                    <li><a href="#base-powers">Base Powers</a></li>
+                    <li><a href="#combination-powers">Combination Powers</a></li>
+                    <li><a href="#bonus-powers">Bonus Powers</a></li>
+                </ul>
+            </nav>
+            <div class="search-bar">
+                <input type="text" id="search" placeholder="Search for powers...">
+            </div>
+        </header>
+        <main>
+            <section id="base-powers">
+                <h2>Base Powers</h2>
+                <ul>
+                    <li><strong>Circle</strong>: Energy Manipulation - Harness and control various forms of energy.</li>
+                    <li><strong>Triangle</strong>: Precision/Sharpness - Enhance accuracy and cutting power.</li>
+                    <li><strong>Square</strong>: Defense/Shielding - Create protective barriers and fortifications.</li>
+                    <li><strong>Star</strong>: Explosive Force - Unleash devastating explosive attacks.</li>
+                    <li><strong>Spiral</strong>: Space/Time Control - Manipulate the fabric of space and time.</li>
+                    <li><strong>Hexagon</strong>: Elemental Mastery - Command the elements of nature.</li>
+                    <li><strong>Pentagon</strong>: Speed/Agility - Move with incredible swiftness and agility.</li>
+                    <li><strong>Crescent</strong>: Illusion/Deception - Create convincing illusions to deceive enemies.</li>
+                    <li><strong>Diamond</strong>: Crystal Power - Utilize the strength and properties of crystals.</li>
+                    <li><strong>Octagon</strong>: Strength/Endurance - Enhance physical strength and stamina.</li>
+                    <li><strong>Cross</strong>: Healing/Restoration - Restore health and vitality.</li>
+                    <li><strong>Wave</strong>: Sound/Vibration - Manipulate sound waves and vibrations.</li>
+                    <li><strong>Arrow</strong>: Accuracy/Tracking - Never miss a target with enhanced precision.</li>
+                    <li><strong>Cloud</strong>: Weather Control - Control and influence weather patterns.</li>
+                    <li><strong>Flame</strong>: Fire Manipulation - Command the power of fire.</li>
+                    <li><strong>Drop</strong>: Water Manipulation - Control and shape water.</li>
+                    <li><strong>Lightning</strong>: Electric Surge - Harness the power of electricity.</li>
+                    <li><strong>Skull</strong>: Necromancy/Darkness - Command the forces of darkness and the undead.</li>
+                    <li><strong>Heart</strong>: Emotion Influence - Influence and manipulate emotions.</li>
+                    <li><strong>Infinity</strong>: Limitless Potential - Unlock unlimited possibilities.</li>
+                </ul>
+            </section>
+            <section id="combination-powers">
+                <h2>Combination Powers</h2>
+                <ul>
+                    <li><strong>Stellar Energy Blaster</strong>: Circle + Star - Blast enemies with powerful stellar energy.</li>
+                    <li><strong>Temporal Sniper</strong>: Triangle + Spiral - Precision strikes that bend time.</li>
+                    <li><strong>Elemental Fortress</strong>: Square + Hexagon - A fortress imbued with elemental powers.</li>
+                    <li><strong>Thunder Sprinter</strong>: Pentagon + Lightning - Move with the speed of lightning.</li>
+                    <li><strong>Crystal Necromancer</strong>: Diamond + Skull - Summon crystal undead minions.</li>
+                    <li><strong>Sonic Inferno</strong>: Flame + Wave - Unleash a fiery sonic boom.</li>
+                    <li><strong>Empathic Healer</strong>: Cross + Heart - Heal allies and influence their emotions.</li>
+                    <li><strong>Storm Archer</strong>: Arrow + Cloud - Command storms with precise strikes.</li>
+                    <li><strong>Infinite Tide Ruler</strong>: Infinity + Drop - Control endless tides and water currents.</li>
+                    <li><strong>Illusive Titan</strong>: Octagon + Crescent - A titan shrouded in illusions.</li>
+                    <li><strong>Nova Burst</strong>: (Single) Star - Unleash a burst of stellar energy.</li>
+                    <li><strong>Chrono Shifter</strong>: (Single) Spiral - Shift through time and space.</li>
+                    <li><strong>Dark Thunder Pyre</strong>: Lightning + Skull + Flame - A dark pyre fueled by thunder.</li>
+                    <li><strong>Eternal Velocity Surge</strong>: Circle + Pentagon + Infinity - Endless speed and energy.</li>
+                    <li><strong>Crystal Sanctuary</strong>: Square + Diamond + Cross - A healing crystal sanctuary.</li>
+                    <li><strong>Tempest Marksman</strong>: Wave + Arrow + Cloud - Precise storm strikes.</li>
+                    <li><strong>Aqua Empath</strong>: Heart + Drop + Hexagon - Emotional water elemental control.</li>
+                    <li><strong>Electric Precision Strike</strong>: Triangle + Lightning + Star - Precise electric blasts.</li>
+                    <li><strong>Infernal Time Reaper</strong>: Flame + Spiral + Skull - A time-reaping inferno.</li>
+                    <li><strong>Boundless Shadow Colossus</strong>: Crescent + Infinity + Octagon - An endless shadow titan.</li>
+                </ul>
+            </section>
+            <section id="bonus-powers">
+                <h2>Bonus Powers</h2>
+                <ul>
+                    <li><strong>Dragon Sovereign</strong>: Legendary: Summon and command mighty dragons.</li>
+                    <li><strong>Void Whisperer</strong>: Legendary: Manipulate the void and its mysteries.</li>
+                    <li><strong>Celestial Overlord</strong>: Legendary: Control the stars and cosmic forces.</li>
+                    <li><strong>Phantom Monarch</strong>: Legendary: Command an army of ghostly apparitions.</li>
+                    <li><strong>Eternal Samurai</strong>: Legendary: Wield an unbreakable blade with eternal skill.</li>
+                    <li><strong>Chaos Weaver</strong>: Legendary: Distort reality to your will.</li>
+                    <li><strong>Titan’s Roar</strong>: Legendary: Unleash earth-shaking power.</li>
+                    <li><strong>Astral Sage</strong>: Legendary: Possess cosmic wisdom and foresight.</li>
+                    <li><strong>Blood Reaper</strong>: Legendary: Drain the life force of enemies.</li>
+                    <li><strong>Divine Guardian</strong>: Legendary: Protect with an impenetrable holy shield.</li>
+                    <li><strong>Goblin Tickler</strong>: Noob: Annoy enemies with useless pokes.</li>
+                    <li><strong>Rubber Duck Summoner</strong>: Noob: Summon useless rubber ducks.</li>
+                    <li><strong>Sneezy Storm</strong>: Noob: Create tiny sneeze-based winds.</li>
+                    <li><strong>Puddle Jumper</strong>: Noob: Make tiny water hops.</li>
+                    <li><strong>Nap Master</strong>: Noob: Induce sleep in enemies.</li>
+                    <li><strong>Clumsy Knight</strong>: Noob: Trip and stumble frequently.</li>
+                    <li><strong>Toast Mage</strong>: Noob: Conjure burnt toast.</li>
+                    <li><strong>Squeaky Voice</strong>: Noob: Annoy with a loud, useless voice.</li>
+                    <li><strong>Paper Cut Lord</strong>: Noob: Inflict minor paper cuts.</li>
+                    <li><strong>Shiny Rock Collector</strong>: Noob: Collect useless shiny rocks.</li>
+                </ul>
+            </section>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('search');
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav ul li a');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', event => {
+                    event.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    document.getElementById(targetId).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            sections.forEach(section => {
+                section.addEventListener('mouseenter', () => {
+                    section.style.opacity = 1;
+                });
+                section.addEventListener('mouseleave', () => {
+                    section.style.opacity = 0.8;
+                });
+            });
+
+            searchInput.addEventListener('input', () => {
+                const query = searchInput.value.toLowerCase();
+                sections.forEach(section => {
+                    const items = section.querySelectorAll('li');
+                    items.forEach(item => {
+                        const text = item.textContent.toLowerCase();
+                        if (text.includes(query)) {
+                            item.style.display = '';
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
