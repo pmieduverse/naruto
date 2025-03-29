@@ -26,7 +26,6 @@
             position: relative;
         }
 
-
         /* Cyberpunk Background Effects */
         body::before {
             content: '';
@@ -208,7 +207,7 @@
             background-size: cover;
             border-radius: 20px;
             box-shadow: 0 0 30px rgba(255, 255, 255, 0.7);
-            color: #ffffff;
+            color: #000126;
             font-size: 1.3em;
             transform: perspective(1200px) rotateY(15deg);
             animation: cardReveal 1.8s ease;
@@ -220,7 +219,7 @@
 
         .card h3 {
             margin: 15px 0;
-            color: #fff200;
+            color: #fff;
             text-shadow: 0 0 8px #ffffff;
             font-size: 1.5em;
         }
@@ -375,6 +374,16 @@
             <div id="finalCard" class="card"></div>
             <button onclick="resetGame()">Forge Again</button>
         </div>
+
+        <!-- Add the SoundCloud player here -->
+        <section style="display: none;">
+            <h2>Listen to Music</h2>
+            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/29933008&color=%23ff5500&auto_play=true"></iframe>
+        </section>
+
+        <audio autoplay>
+            <source src="https://api.soundcloud.com/tracks/29933008/stream?client_id=YOUR_CLIENT_ID" type="audio/mpeg">
+        </audio>
     </div>
 
     <!-- Manual Search Section -->
@@ -475,7 +484,7 @@
             // Calculate base power index using lucky number and name sum
             const nameSum = playerData.name.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
             const powerIndex = (playerData.luckyNumber + nameSum) % basePowers.length;
-            playerData.power = basePowers[powerIndex] || getRandomPower(basePowers);
+            playerData.power = basePowers[powerIndex];
             document.getElementById("powerResult").innerText = `Power: ${playerData.power}`;
             switchStep(4);
         }
@@ -483,7 +492,7 @@
         function showBonus() {
             // Sum the digits of the lucky number
             const luckyNumberSum = playerData.luckyNumber.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
-            playerData.bonus = bonusPowers[luckyNumberSum % bonusPowers.length] || getRandomPower(bonusPowers);
+            playerData.bonus = bonusPowers[luckyNumberSum % bonusPowers.length];
             document.getElementById("bonusResult").innerText = `Bonus Power: ${playerData.bonus}`;
             switchStep(5);
         }
@@ -566,10 +575,10 @@
             // Calculate base power index using lucky number and name sum
             const nameSum = name.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
             const powerIndex = (luckyNumber + nameSum) % basePowers.length;
-            const power = basePowers[powerIndex] || getRandomPower(basePowers);
+            const power = basePowers[powerIndex];
 
             // Sum the digits of the lucky number
-            const bonus = bonusPowers[luckyNumberSum % bonusPowers.length] || getRandomPower(bonusPowers);
+            const bonus = bonusPowers[luckyNumberSum % bonusPowers.length];
 
             document.getElementById("manualResult").innerHTML = `
                 <h3>${name}'s Power Card</h3>
@@ -579,10 +588,6 @@
                 <p>Base Power: ${power}</p>
                 <p>Bonus Power: ${bonus}</p>
             `;
-        }
-
-        function getRandomPower(powers) {
-            return powers[Math.floor(Math.random() * powers.length)];
         }
 
         // Add sound effects and background music
@@ -608,6 +613,5 @@
             }
         });
     </script>
-    
 </body>
 </html>
