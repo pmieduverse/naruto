@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life Power Forge - Premium Edition</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>Life Power Forge - Nexus of Eternity</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Orbitron:wght@400;700&family=Audiowide&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,299 +14,430 @@
 
         body {
             font-family: 'Orbitron', sans-serif;
-            background-image: url('https://img.freepik.com/free-photo/bigfoot-represented-neon-glow_23-2151322865.jpg?t=st=1743240556~exp=1743244156~hmac=7e76561af1709e33a19b0dd6a1a39818bd762ff0fcd3398aafa1f2549f200347&w=1380'); /* Replace with your image URL */
-            background-size: cover;
-            background-position: center;
+            background: linear-gradient(135deg, #ffd700, #ff4500, #1e90ff, #8a2be2);
+            background-size: 400% 400%;
+            animation: cosmicFlow 20s ease infinite;
+            color: #fff;
             height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
+            flex-direction: column;
             overflow: hidden;
-            animation: backgroundShift 15s infinite alternate;
             position: relative;
         }
 
-        /* Cyberpunk Background Effects */
-        body::before {
-            content: '';
+        @keyframes cosmicFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particle-canvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('https://img.freepik.com/free-vector/energy-sphere-representing-source_1196-979.jpg?t=st=1743241327~exp=1743244927~hmac=52c60b55d02f72cab36b3c38ac56300f9a424f2e48cf5c84229b2c426f71d348&w=740');
-            opacity: 0.1;
             z-index: 0;
-            animation: circuitMove 10s linear infinite alternate;
+            pointer-events: none;
         }
 
-        @keyframes circuitMove {
-            0% { background-position: 0 0; }
-            100% { background-position: 1000px 1000px; }
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 40, 0.9);
+            padding: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 1000;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+        }
+
+        .nav-btn {
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #ffd700, #ff4500);
+            border: none;
+            border-radius: 25px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-family: 'Audiowide', sans-serif;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .nav-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px #ffd700, 0 0 50px #ff4500;
         }
 
         .container {
-            text-align: center;
-            color: #fff;
-            padding: 30px;
-            background: rgba(10, 10, 30, 0.85);
-            border: 2px solid #00ddeb;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(0, 221, 235, 0.7), inset 0 0 15px rgba(255, 0, 255, 0.3);
-            max-width: 700px;
-            width: 90%;
-            position: relative;
+            margin-top: 80px;
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
             z-index: 1;
-            backdrop-filter: blur(10px);
-            animation: containerGlow 3s infinite alternate;
         }
 
-        @keyframes containerGlow {
-            0% { box-shadow: 0 0 30px rgba(0, 221, 235, 0.7), inset 0 0 15px rgba(255, 0, 255, 0.3); }
-            100% { box-shadow: 0 0 50px rgba(255, 0, 255, 0.7), inset 0 0 25px rgba(0, 221, 235, 0.5); }
+        .holo-window {
+            background: rgba(10, 10, 40, 0.95);
+            border: 3px solid #ffd700;
+            border-radius: 20px;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.9), inset 0 0 20px rgba(255, 45, 0, 0.5);
+            width: 95%;
+            max-width: 1200px;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            animation: holoPulse 5s infinite alternate;
+            overflow-y: auto;
+            perspective: 1000px;
+        }
+
+        @keyframes holoPulse {
+            0% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.9), inset 0 0 20px rgba(255, 45, 0, 0.5); }
+            100% { box-shadow: 0 0 70px rgba(255, 45, 0, 0.9), inset 0 0 30px rgba(255, 215, 0, 0.7); }
         }
 
         .title {
-            font-size: 3em;
-            color: #00ddeb;
-            text-shadow: 0 0 15px #00ddeb, 0 0 30px #ff00ff, 0 0 45px #00ddeb;
-            animation: titlePulse 2s infinite alternate;
+            font-family: 'Cinzel', serif;
+            font-size: 3.5em;
+            color: #ffd700;
+            text-shadow: 0 0 20px #ff4500, 0 0 40px #1e90ff;
+            animation: titleGlow 3s infinite alternate;
             margin-bottom: 20px;
         }
 
-        @keyframes titlePulse {
-            0% { text-shadow: 0 0 15px #00ddeb, 0 0 30px #ff00ff; }
-            100% { text-shadow: 0 0 30px #ff00ff, 0 0 45px #00ddeb; }
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 20px #ff4500, 0 0 40px #1e90ff; }
+            100% { text-shadow: 0 0 40px #ffd700, 0 0 60px #ff4500; }
         }
 
         .step {
             display: none;
             opacity: 0;
-            transition: opacity 0.7s ease;
+            width: 100%;
+            text-align: center;
+            transition: opacity 0.8s ease, transform 0.5s ease;
+            transform: translateZ(-100px);
         }
 
         .step.active {
             display: block;
             opacity: 1;
+            transform: translateZ(0);
         }
 
         h2 {
-            color: #ff00ff;
-            text-shadow: 0 0 10px #ff00ff, 0 0 20px #00ddeb;
-            font-size: 1.8em;
+            font-family: 'Cinzel', serif;
+            color: #ff4500;
+            text-shadow: 0 0 15px #ffd700;
+            font-size: 2em;
             margin-bottom: 20px;
         }
 
         input {
-            padding: 12px;
+            padding: 15px;
             font-size: 1.3em;
-            border: 2px solid #00ddeb;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
             color: #fff;
             outline: none;
             width: 100%;
-            max-width: 300px;
+            max-width: 350px;
+            margin: 10px 0;
             transition: border-color 0.3s, box-shadow 0.3s;
         }
 
         input:focus {
-            border-color: #ff00ff;
-            box-shadow: 0 0 15px #ff00ff;
+            border-color: #ff4500;
+            box-shadow: 0 0 20px #ff4500;
         }
 
         button {
-            padding: 12px 30px;
+            padding: 15px 40px;
             font-size: 1.3em;
-            margin-top: 20px;
-            background: linear-gradient(45deg, #00ddeb, #ff00ff, #00ddeb);
+            margin: 15px;
+            background: linear-gradient(45deg, #ffd700, #ff4500);
             border: none;
             border-radius: 30px;
             color: #fff;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
+            font-family: 'Audiowide', sans-serif;
             text-transform: uppercase;
-            font-weight: 700;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
         button:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 20px #00ddeb, 0 0 40px #ff00ff;
-        }
-
-        button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300%;
-            height: 300%;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            transition: transform 0.5s;
-        }
-
-        button:hover::before {
-            transform: translate(-50%, -50%) scale(1);
+            box-shadow: 0 0 30px #ffd700, 0 0 50px #ff4500;
         }
 
         .result-box {
-            font-size: 1.6em;
+            font-size: 1.5em;
             padding: 20px;
             margin: 20px 0;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid #00ddeb;
-            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ffd700;
+            border-radius: 15px;
             color: #fff;
-            text-shadow: 0 0 8px #00ddeb;
-            transform: perspective(600px) rotateX(15deg);
-            animation: fadeIn 1.2s ease;
+            text-shadow: 0 0 10px #ff4500;
+            animation: fadeIn 1.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .result-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 45, 0, 0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            100% { left: 100%; }
         }
 
         .shapes-container {
             display: flex;
             justify-content: center;
-            gap: 25px;
+            gap: 15px;
             flex-wrap: wrap;
-            margin-top: 20px;
+            margin: 20px 0;
         }
 
         .shape {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(45deg, #ff00ff, #00ddeb);
-            border-radius: 12px;
-            animation: spin 3s infinite linear;
-            box-shadow: 0 0 15px #ff00ff, 0 0 25px #00ddeb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            font-size: 1em;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            width: 80px;
+            height: 80px;
+            background-size: cover;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #ffd700;
+            animation: spin 10s linear infinite;
+            transition: transform 0.3s;
         }
 
         .shape:hover {
-            transform: scale(1.3);
-            box-shadow: 0 0 25px #00ddeb, 0 0 40px #ff00ff;
+            transform: scale(1.2);
+        }
+
+        .extra-shape {
+            border: 3px solid #ff4500;
+            box-shadow: 0 0 20px #ff4500, 0 0 30px #ffd700;
+            animation: pulseMagic 1.5s infinite;
+        }
+
+        @keyframes pulseMagic {
+            0% { border-color: #ff4500; box-shadow: 0 0 10px #ff4500; }
+            50% { border-color: #ffd700; box-shadow: 0 0 20px #ffd700; }
+            100% { border-color: #ff4500; box-shadow: 0 0 10px #ff4500; }
+        }
+
+        .card-container {
+            perspective: 1500px;
+            width: 100%;
+            max-width: 800px;
         }
 
         .card {
-            padding: 25px;
-            margin: 20px auto;
-            background: linear-gradient(135deg, #00ddeb, #ff00ff, #00ddeb);
-            background-size: 400% 400%;
-            background-image: linear-gradient(135deg, #00ddeb, #ff00ff, #00ddeb), url("https://cdn.pixabay.com/photo/2018/06/09/15/25/technology-3464573_1280.jpg");
-            background-blend-mode: multiply;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
+            background: rgba(10, 10, 40, 0.9);
+            border: 3px solid #ffd700;
             border-radius: 20px;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.7);
-            color: #ffffff;
-            font-size: 1.3em;
-            transform: perspective(1200px) rotateY(15deg);
-            animation: cardReveal 1.8s ease;
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+            padding: 20px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+            transform: rotateY(5deg);
             transition: transform 0.5s;
+            position: relative;
+            overflow: hidden;
         }
+
         .card:hover {
-            transform: perspective(1200px) rotateY(25deg);
+            transform: rotateY(10deg);
         }
 
-        .card h3 {
-            margin: 15px 0;
-            color: #fff;
-            text-shadow: 0 0 8px #ffffff;
-            font-size: 1.5em;
+        .card-content {
+            flex: 2;
+            text-align: left;
         }
 
-        .card p {
-            margin: 8px 0;
-            font-weight: 700;
+        .card-content h3 {
+            color: #ffd700;
+            font-family: 'Cinzel', serif;
+            font-size: 1.8em;
+            text-shadow: 0 0 10px #ffd700;
+            margin-bottom: 10px;
+        }
+
+        .card-content p {
+            font-size: 1em;
+            text-shadow: 0 0 5px #ff4500;
+            margin: 5px 0;
+        }
+
+        .card-images {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .card-images img {
+            width: 100%;
+            max-width: 100px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #ffd700;
+        }
+
+        .shapes-small {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .shapes-small img {
+            width: 30px;
+            height: 30px;
+            border-radius: 5px;
+            box-shadow: 0 0 8px #ffd700;
         }
 
         .progress-bar {
             width: 100%;
-            height: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
+            max-width: 600px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
             overflow: hidden;
-            margin-top: 25px;
-            box-shadow: 0 0 10px #00ddeb;
+            margin: 15px 0;
+            box-shadow: 0 0 10px #ffd700;
         }
 
         .progress-bar div {
             height: 100%;
-            background: linear-gradient(90deg, #00ddeb, #ff00ff);
+            background: linear-gradient(90deg, #ffd700, #ff4500);
             width: 0;
-            transition: width 0.7s ease;
+            transition: width 0.8s ease;
         }
 
-        .description-btn, .manual-search-btn {
+        .synergy-visualizer {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            font-size: 1.2em;
+            color: #ffd700;
+            text-shadow: 0 0 8px #ffd700;
+        }
+
+        .panel {
             position: fixed;
-            padding: 12px 25px;
-            background: linear-gradient(45deg, #00ddeb, #ff00ff);
-            border: none;
-            border-radius: 30px;
-            color: #fff;
-            cursor: pointer;
-            font-size: 1.1em;
-            transition: transform 0.3s, box-shadow 0.3s;
-            z-index: 1000;
-            text-decoration: none;
-            display: inline-block;
-            text-transform: uppercase;
-        }
-
-        .description-btn {
-            top: 20px;
-            left: 20px;
-        }
-
-        .manual-search-btn {
             bottom: 20px;
-            left: 20px;
-        }
-
-        .description-btn:hover, .manual-search-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px #00ddeb, 0 0 40px #ff00ff;
-        }
-
-        .manual-search-container {
-            position: fixed;
-            bottom: 80px;
             right: 20px;
-            background: rgba(10, 10, 30, 0.85);
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(0, 17, 255, 0.7);
+            background: rgba(10, 10, 40, 0.95);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
             max-width: 350px;
             width: 90%;
             display: none;
             z-index: 100;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px);
         }
 
-        .manual-search-container.active {
+        .panel.active {
             display: block;
         }
 
-        .manual-search-container h2 {
-            font-size: 1.5em;
+        /* Summoning Spin Styles */
+        .summoning-spinner {
+            width: 100%;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            overflow: hidden;
+            position: relative;
         }
 
-        @keyframes glow {
-            0% { text-shadow: 0 0 10px #00ddeb; }
-            100% { text-shadow: 0 0 20px #ff00ff; }
+        .spinner-slot {
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            border-radius: 10px;
+            animation: spinAnimation 0.1s linear infinite;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+
+        @keyframes spinAnimation {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100px); }
+        }
+
+        .summoned-animal {
+            text-align: center;
+        }
+
+        .summoned-animal img {
+            width: 100%;
+            max-width: 150px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+
+        .rarity-legendary {
+            border: 3px solid #ffd700;
+            box-shadow: 0 0 30px #ffd700;
+            animation: glowLegendary 1.5s infinite alternate;
+        }
+
+        .rarity-mythic {
+            border: 3px solid #8a2be2;
+            box-shadow: 0 0 30px #8a2be2;
+            animation: glowMythic 1.5s infinite alternate;
+        }
+
+        .rarity-epic {
+            border: 3px solid #1e90ff;
+            box-shadow: 0 0 30px #1e90ff;
+            animation: glowEpic 1.5s infinite alternate;
+        }
+
+        @keyframes glowLegendary {
+            0% { box-shadow: 0 0 20px #ffd700; }
+            100% { box-shadow: 0 0 40px #ffd700; }
+        }
+
+        @keyframes glowMythic {
+            0% { box-shadow: 0 0 20px #8a2be2; }
+            100% { box-shadow: 0 0 40px #8a2be2; }
+        }
+
+        @keyframes glowEpic {
+            0% { box-shadow: 0 0 20px #1e90ff; }
+            100% { box-shadow: 0 0 40px #1e90ff; }
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -315,228 +446,646 @@
             100% { transform: rotate(360deg); }
         }
 
-        @keyframes cardReveal {
-            0% { opacity: 0; transform: perspective(1200px) rotateY(-90deg); }
-            100% { opacity: 1; transform: perspective(1200px) rotateY(15deg); }
+        @media (max-width: 768px) {
+            .holo-window {
+                height: 75vh;
+                padding: 20px;
+            }
+            .title {
+                font-size: 2.5em;
+            }
+            .card {
+                flex-direction: column;
+                padding: 15px;
+            }
+            .card-content, .card-images {
+                width: 100%;
+            }
+            .card-content h3 {
+                font-size: 1.5em;
+            }
+            .card-content p {
+                font-size: 0.9em;
+            }
+            .summoning-spinner {
+                height: 120px;
+            }
+            .spinner-slot {
+                width: 80px;
+                height: 80px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .holo-window {
+                height: 70vh;
+                padding: 15px;
+            }
+            .title {
+                font-size: 2em;
+            }
+            input, button {
+                font-size: 1em;
+                padding: 10px;
+            }
+            .card-content h3 {
+                font-size: 1.3em;
+            }
+            .summoning-spinner {
+                height: 100px;
+            }
+            .spinner-slot {
+                width: 60px;
+                height: 60px;
+            }
         }
     </style>
 </head>
 <body>
-    <a href="description.html" class="description-btn">Description</a>
-    <button onclick="toggleManualSearch()" class="manual-search-btn">Manual Search</button>
+    <canvas id="particleCanvas" class="particle-canvas"></canvas>
+
+    <nav>
+        <button onclick="toggleManualSearch()" class="nav-btn">Manual Search</button>
+        <button onclick="toggleVault()" class="nav-btn">Destiny Vault</button>
+        <button onclick="toggleTrials()" class="nav-btn">Power Trials</button>
+        <button onclick="toggleCodex()" class="nav-btn">Lore Codex</button>
+        <button onclick="toggleSummoningSpin()" class="nav-btn">Summoning Spin</button>
+    </nav>
 
     <div class="container">
-        <h1 class="title">Life Power Forge</h1>
+        <div class="holo-window">
+            <h1 class="title">Life Power Forge: Nexus of Eternity</h1>
 
-        <div class="progress-bar">
-            <div id="progress"></div>
+            <div class="progress-bar">
+                <div id="progress"></div>
+            </div>
+
+            <div id="step1" class="step active">
+                <h2>Enter your name and clan number</h2>
+                <input type="text" id="playerName" placeholder="आपका नाम">
+                <input type="number" id="clanNumber" placeholder="आपका क्लैन नंबर">
+                <button onclick="startGame()">Make your own luck</button>
+            </div>
+
+            <div id="step2" class="step">
+                <h2>Your Celestial Rank</h2>
+                <div id="rankResult" class="result-box"></div>
+                <button onclick="showLuckyNumber()">Check your lucky number</button>
+            </div>
+
+            <div id="step3" class="step">
+                <h2>Your Lucky Number</h2>
+                <div id="luckyNumber" class="result-box"></div>
+                <div id="shapesResult" class="shapes-container"></div>
+                <button onclick="showPower()">Awaken core power</button>
+            </div>
+
+            <div id="step4" class="step">
+                <h2>Your Core Strength</h2>
+                <div id="powerResult" class="result-box"></div>
+                <button onclick="showMythicPower()">Discover mythic power</button>
+            </div>
+
+            <div id="step5" class="step">
+                <h2>Mythic Power</h2>
+                <div id="mythicResult" class="result-box"></div>
+                <button onclick="showChaosPower()">Embrace the Power of Chaos</button>
+            </div>
+
+            <div id="step6" class="step">
+                <h2>The Power of Chaos</h2>
+                <div id="chaosResult" class="result-box"></div>
+                <button onclick="showFinalCard()">View your Celestial Card</button>
+            </div>
+
+            <div id="step7" class="step">
+                <h2>Celestial Card</h2>
+                <div class="card-container">
+                    <div id="finalCard" class="card"></div>
+                </div>
+                <div id="synergyVisualizer" class="synergy-visualizer"></div>
+                <button onclick="resetGame()">Rebuild</button>
+            </div>
         </div>
-
-        <!-- Step 1: Name Input -->
-        <div id="step1" class="step active">
-            <h2>Enter Your Name</h2>
-            <input type="text" id="playerName" placeholder="Your Name">
-            <button onclick="startGame()">Forge Your Power</button>
-        </div>
-
-        <!-- Step 2: Rank Reveal -->
-        <div id="step2" class="step">
-            <h2>Your Rank</h2>
-            <div id="rankResult" class="result-box"></div>
-            <button onclick="showLuckyNumber()">Reveal Lucky Number</button>
-        </div>
-
-        <!-- Step 3: Lucky Number & Shapes -->
-        <div id="step3" class="step">
-            <h2>Your Lucky Number</h2>
-            <div id="luckyNumber" class="result-box"></div>
-            <div id="shapesResult" class="shapes-container"></div>
-            <button onclick="showPower()">Unleash Power</button>
-        </div>
-
-        <!-- Step 4: Base Power -->
-        <div id="step4" class="step">
-            <h2>Your Base Power</h2>
-            <div id="powerResult" class="result-box"></div>
-            <button onclick="showBonus()">Draw Bonus Power</button>
-        </div>
-
-        <!-- Step 5: Bonus Power -->
-        <div id="step5" class="step">
-            <h2>Bonus Power</h2>
-            <div id="bonusResult" class="result-box"></div>
-            <button onclick="showFinalCard()">View Your Power Card</button>
-        </div>
-
-        <!-- Step 6: Final Result Card -->
-        <div id="step6" class="step">
-            <h2>Your Power Card</h2>
-            <div id="finalCard" class="card"></div>
-            <button onclick="resetGame()">Forge Again</button>
-        </div>
-
-        <!-- Add the SoundCloud player here -->
-        <section style="display: none;">
-            <h2>Listen to Music</h2>
-            <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/29933008&color=%23ff5500&auto_play=true"></iframe>
-        </section>
-
-        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/track/1Ju2lYlvXnvXe3r3QC9sJH?utm_source=generator" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 
-    <!-- Manual Search Section -->
-    <div id="manualSearchContainer" class="manual-search-container">
-        <h2>Manual Search</h2>
-        <input type="text" id="manualName" placeholder="Your Name">
-        <input type="number" id="manualLuckyNumber" placeholder="Your Lucky Number">
-        <button onclick="manualSearch()">Search</button>
+    <div id="manualSearchContainer" class="panel">
+        <h2>मैनुअल सर्च</h2>
+        <input type="text" id="manualName" placeholder="आपका नाम">
+        <input type="number" id="manualLuckyNumber" placeholder="आपका भाग्यशाली नंबर">
+        <input type="number" id="manualClanNumber" placeholder="आपका क्लैन नंबर">
+        <button onclick="manualSearch()">किस्मत खोजें</button>
         <div id="manualResult" class="result-box"></div>
+    </div>
+
+    <div id="vaultContainer" class="panel">
+        <h2>Destiny Vault</h2>
+        <p>Unlock past destinies!</p>
+        <button onclick="viewVault()">View Saved Cards</button>
+        <div id="vaultResult" class="result-box"></div>
+    </div>
+
+    <div id="trialsContainer" class="panel">
+        <h2>Power Trials</h2>
+        <p>Test your cosmic powers!</p>
+        <button onclick="startTrial()">Begin Trial</button>
+        <div id="trialResult" class="result-box"></div>
+    </div>
+
+    <div id="codexContainer" class="panel">
+        <h2>Lore Codex</h2>
+        <p>Discover the secrets of the Nexus.</p>
+        <button onclick="viewCodex()">Read Codex</button>
+        <div id="codexResult" class="result-box"></div>
+    </div>
+
+    <div id="summoningContainer" class="panel">
+        <h2>Summoning Spin</h2>
+        <p>Spin to summon a legendary, mythic, or epic animal!</p>
+        <button onclick="startSummoningSpin()">Start Spin</button>
+        <div id="summoningSpinner" class="summoning-spinner"></div>
+        <div id="summoningResult" class="summoned-animal"></div>
     </div>
 
     <script>
         const shapes = [
-            "Circle", "Triangle", "Square", "Star", "Spiral", "Hexagon", "Pentagon", "Crescent",
-            "Diamond", "Octagon", "Cross", "Wave", "Arrow", "Cloud", "Flame", "Drop",
-            "Lightning", "Skull", "Heart", "Infinity"
+            { name: "Circle", img: "https://img.freepik.com/free-vector/electric-ball-light-effect_23-2148392774.jpg" },
+            { name: "Triangle", img: "https://img.freepik.com/free-photo/3d-rendering-neon-triangle_23-2151293846.jpg" },
+            { name: "Square", img: "https://img.freepik.com/free-vector/neon-light-frame_53876-91666.jpg" },
+            { name: "Star", img: "https://img.freepik.com/free-photo/digital-art-cosmic-star-illustration_23-2151572563.jpg" },
+            { name: "Spiral", img: "https://img.freepik.com/free-vector/multicolor-fractal-background_1164-138.jpg" },
+            { name: "Hexagon", img: "https://img.freepik.com/free-vector/realistic-golden-frame_23-2149240752.jpg" },
+            { name: "Pentagon", img: "https://img.freepik.com/free-photo/numerology-collage-concept_23-2150061757.jpg" },
+            { name: "Crescent", img: "https://img.freepik.com/free-photo/digital-art-character-looking-moon_23-2151639232.jpg" },
+            { name: "Diamond", img: "https://img.freepik.com/premium-photo/diamond-with-blue-star-it-purple-background_1283151-10719.jpg" },
+            { name: "Octagon", img: "https://img.freepik.com/free-photo/illustration-hexagonal-figure-made-brown-gold-lights_181624-21212.jpg" },
+            { name: "Cross", img: "https://img.freepik.com/free-photo/intricate-3d-cross-with-bright-lights_23-2151004881.jpg" },
+            { name: "Wave", img: "https://img.freepik.com/free-photo/water-anime-style_23-2151080215.jpg" },
+            { name: "Arrow", img: "https://img.freepik.com/free-vector/blue-light-shape-dark-background_1409-924.jpg" },
+            { name: "Cloud", img: "https://img.freepik.com/free-photo/lightning-strike-cloudy-sky-night-time_395237-28.jpg" },
+            { name: "Flame", img: "https://img.freepik.com/premium-photo/fire-futuristic-background-modern-design-abstract-shapes_27525-15152.jpg" },
+            { name: "Drop", img: "https://img.freepik.com/free-vector/water-splash-water-drop-abstract-3d-polygonal-wireframe-airplane-blue-night-sky-with-dots-stars-illustration-background_587448-859.jpg" },
+            { name: "Lightning", img: "https://img.freepik.com/premium-photo/orange-green-lightning-lightning-storm-thunderstorm_53876-651891.jpg" },
+            { name: "Skull", img: "https://img.freepik.com/free-vector/mecha-devil-skull-vector-logo_43623-858.jpg" },
+            { name: "Heart", img: "https://img.freepik.com/free-vector/heart-background_1048-11554.jpg" },
+            { name: "Infinity", img: "https://img.freepik.com/free-photo/abstract-light-painting-dark_23-2149627879.jpg" }
         ];
 
         const extraShapes = [
-            "Galaxy", "Comet", "Nebula", "Supernova", "Black Hole", "Pulsar", "Quasar",
-            "Asteroid", "Meteor", "Constellation"
+            { name: "Galaxy", img: "https://img.freepik.com/free-photo/mystical-galaxy-glow_181624-14999.jpg" },
+            { name: "Comet", img: "https://img.freepik.com/free-vector/glowing-comet-light-effect_1284-45641.jpg" },
+            { name: "Nebula", img: "https://img.freepik.com/free-vector/mystical-nebula-glow_53876-118595.jpg" },
+            { name: "Supernova", img: "https://img.freepik.com/free-vector/glowing-supernova-light_52683-30448.jpg" },
+            { name: "Black Hole", img: "https://img.freepik.com/free-photo/mystical-black-hole-glow_24640-93341.jpg" },
+            { name: "Pulsar", img: "https://img.freepik.com/free-vector/glowing-pulsar-light_52683-30560.jpg" },
+            { name: "Quasar", img: "https://img.freepik.com/free-vector/mystical-quasar-glow_53876-117752.jpg" },
+            { name: "Asteroid", img: "https://img.freepik.com/free-photo/mystical-asteroid-glow_1048-12589.jpg" },
+            { name: "Meteor", img: "https://img.freepik.com/free-vector/glowing-meteor-light_98292-3532.jpg" },
+            { name: "Constellation", img: "https://img.freepik.com/free-photo/mystical-constellation-glow_23-2150327762.jpg" }
+        ];
+
+        const clanPowers = [
+            { name: "Starlight Cascade", desc: "आकाश से चमकती तारों की बारिश बुलाएं जो सहयोगियों को चंगा करे।", img: "https://img.freepik.com/free-vector/glowing-wavy-lines-mystical-light_474888-6245.jpg" },
+            { name: "Void Whisper", desc: "शून्य की फुसफुसाहट से शत्रुओं को भ्रमित करें।", img: "https://img.freepik.com/free-vector/mystical-light-effect_528282-303.jpg" },
+            { name: "Crystal Veil", desc: "नीले क्रिस्टल का पर्दा बनाएं जो हमलों को अवशोषित करे।", img: "https://img.freepik.com/free-vector/mystical-crystal-glow_1217-1801.jpg" },
+            { name: "Lunar Tide", desc: "चांदनी की लहरें छोड़ें जो समय को धीमा कर दें।", img: "https://img.freepik.com/free-photo/mystical-lunar-glow_23-2149627886.jpg" },
+            { name: "Aether Pulse", desc: "ईथर की नीली ऊर्जा का धमाका करें जो मशीनों को रीचार्ज करे।", img: "https://img.freepik.com/free-vector/mystical-aether-light_107791-30268.jpg" },
+            { name: "Frost Nova", desc: "बर्फीली चमक का विस्फोट करें जो शत्रुओं को जमा दे।", img: "https://img.freepik.com/free-vector/mystical-frost-glow_1017-26821.jpg" },
+            { name: "Emerald Surge", desc: "हरी ऊर्जा की लहर बुलाएं जो प्रकृति को पुनर्जनन करे।", img: "https://img.freepik.com/free-vector/mystical-emerald-light_1284-33525.jpg" },
+            { name: "Shadow Mirage", desc: "काली छायाओं का भ्रम बनाएं जो शत्रुओं को धोखा दे।", img: "https://img.freepik.com/free-vector/mystical-shadow-glow_474888-6246.jpg" },
+            { name: "Sapphire Strike", desc: "नीलम की बिजली का प्रहार करें जो कवच भेद दे।", img: "https://img.freepik.com/free-vector/mystical-sapphire-light_528282-304.jpg" },
+            { name: "Twilight Beacon", desc: "गोधूलि की रोशनी जलाएं जो रास्ता दिखाए।", img: "https://img.freepik.com/free-vector/mystical-twilight-glow_1217-1802.jpg" },
+            { name: "Amethyst Echo", desc: "बैंगनी ध्वनि तरंगें छोड़ें जो बाधाएं तोड़ दें।", img: "https://img.freepik.com/free-photo/mystical-amethyst-glow_23-2149627887.jpg" },
+            { name: "Celestine Shroud", desc: "आसमानी पर्दा बुनें जो आपको अदृश्य कर दे।", img: "https://img.freepik.com/free-vector/mystical-celestine-light_107791-30269.jpg" },
+            { name: "Verdant Blossom", desc: "हरे फूलों का तूफान बुलाएं जो जीवन शक्ति दे।", img: "https://img.freepik.com/free-vector/mystical-verdant-glow_1017-26822.jpg" },
+            { name: "Onyx Rift", desc: "काले दरार खोलें जो शत्रुओं को निगल ले।", img: "https://img.freepik.com/free-vector/mystical-onyx-light_474888-6247.jpg" },
+            { name: "Aurora Flash", desc: "उत्तरी रोशनी की चमक पैदा करें जो अंधा कर दे।", img: "https://img.freepik.com/free-vector/mystical-aurora-glow_1284-33526.jpg" },
+            { name: "Silver Comet", desc: "चांदी की धूमकेतु बुलाएं जो तेजी से हमला करे।", img: "https://img.freepik.com/free-vector/mystical-silver-light_528282-305.jpg" },
+            { name: "Indigo Forge", desc: "नीली ऊर्जा से हथियार बनाएं जो अटूट हों।", img: "https://img.freepik.com/free-vector/mystical-indigo-glow_1217-1803.jpg" },
+            { name: "Cobalt Starfall", desc: "नीले तारों की बारिश बरसाएं जो क्षेत्र को शुद्ध करे।", img: "https://img.freepik.com/free-photo/mystical-cobalt-glow_23-2149627888.jpg" },
+            { name: "Ebony Whisper", desc: "काली फुसफुसाहट से शत्रु के मन को नियंत्रित करें।", img: "https://img.freepik.com/free-vector/mystical-ebony-light_107791-30270.jpg" },
+            { name: "Opal Nova", desc: "सफेद चमक का विस्फोट करें जो सब कुछ नवीकरण करे।", img: "https://img.freepik.com/free-vector/mystical-opal-glow_1017-26823.jpg" }
         ];
 
         const basePowers = [
-            "Stellar Energy Blaster", "Temporal Sniper", "Elemental Fortress", "Thunder Sprinter",
-            "Crystal Necromancer", "Sonic Inferno", "Empathic Healer", "Storm Archer",
-            "Infinite Tide Ruler", "Illusive Titan", "Nova Burst", "Chrono Shifter",
-            "Dark Thunder Pyre", "Eternal Velocity Surge", "Crystal Sanctuary", "Tempest Marksman",
-            "Aqua Empath", "Electric Precision Strike", "Infernal Time Reaper", "Boundless Shadow Colossus"
+            { name: "Stellar Energy Blaster", desc: "Fire concentrated beams of starlight to disintegrate obstacles or power ancient machines.", img: "https://img.freepik.com/free-vector/energy-sphere-representing-source_1196-979.jpg" },
+            { name: "Temporal Sniper", desc: "Manipulate time to strike targets with precision across centuries.", img: "https://via.placeholder.com/200?text=TemporalSniper" },
+            { name: "Elemental Fortress", desc: "Summon barriers of fire, ice, and earth to protect allies.", img: "https://via.placeholder.com/200?text=ElementalFortress" },
+            { name: "Thunder Sprinter", desc: "Move at lightning speed, leaving trails of electric shockwaves.", img: "https://via.placeholder.com/200?text=ThunderSprinter" },
+            { name: "Crystal Necromancer", desc: "Raise crystalline minions to fight or rebuild shattered structures.", img: "https://via.placeholder.com/200?text=CrystalNecromancer" },
+            { name: "Sonic Inferno", desc: "Unleash soundwaves that ignite the air, creating fiery explosions.", img: "https://via.placeholder.com/200?text=SonicInferno" },
+            { name: "Empathic Healer", desc: "Channel emotions to heal wounds or calm chaotic minds.", img: "https://via.placeholder.com/200?text=EmpathicHealer" },
+            { name: "Storm Archer", desc: "Fire arrows infused with hurricane winds to hit distant foes.", img: "https://via.placeholder.com/200?text=StormArcher" },
+            { name: "Infinite Tide Ruler", desc: "Control oceans to flood or reshape landscapes.", img: "https://via.placeholder.com/200?text=TideRuler" },
+            { name: "Illusive Titan", desc: "Create massive illusions to deceive or intimidate enemies.", img: "https://via.placeholder.com/200?text=IllusiveTitan" },
+            { name: "Nova Burst", desc: "Release a star-like explosion to clear areas or signal allies.", img: "https://via.placeholder.com/200?text=NovaBurst" },
+            { name: "Chrono Shifter", desc: "Rewind time briefly to undo mistakes or alter outcomes.", img: "https://via.placeholder.com/200?text=ChronoShifter" },
+            { name: "Dark Thunder Pyre", desc: "Summon shadowy lightning to incinerate or corrupt targets.", img: "https://via.placeholder.com/200?text=DarkPyre" },
+            { name: "Eternal Velocity Surge", desc: "Gain superhuman speed for prolonged periods, dodging all attacks.", img: "https://via.placeholder.com/200?text=VelocitySurge" },
+            { name: "Crystal Sanctuary", desc: "Erect a crystalline dome to shield against cosmic threats.", img: "https://via.placeholder.com/200?text=CrystalSanctuary" },
+            { name: "Tempest Marksman", desc: "Shoot bullets that summon localized storms on impact.", img: "https://via.placeholder.com/200?text=TempestMarksman" },
+            { name: "Aqua Empath", desc: "Influence water-based lifeforms to assist or communicate.", img: "https://via.placeholder.com/200?text=AquaEmpath" },
+            { name: "Electric Precision Strike", desc: "Deliver pinpoint electric shocks to disable tech or foes.", img: "https://via.placeholder.com/200?text=ElectricStrike" },
+            { name: "Infernal Time Reaper", desc: "Slow time to unleash devastating fiery slashes.", img: "https://via.placeholder.com/200?text=TimeReaper" },
+            { name: "Boundless Shadow Colossus", desc: "Summon a giant shadow form to crush enemies or block paths.", img: "https://via.placeholder.com/200?text=ShadowColossus" }
         ];
 
-        const bonusPowers = [
-            "Dragon Sovereign", "Void Whisperer", "Celestial Overlord", "Phantom Monarch",
-            "Eternal Samurai", "Chaos Weaver", "Titan’s Roar", "Astral Sage", "Blood Reaper",
-            "Divine Guardian", "Goblin Tickler", "Rubber Duck Summoner", "Sneezy Storm",
-            "Puddle Jumper", "Nap Master", "Clumsy Knight", "Toast Mage", "Squeaky Voice",
-            "Paper Cut Lord", "Shiny Rock Collector"
+        const mythicPowers = [
+            { name: "Celestial Architect", desc: "Craft entire planets or star systems with a thought, shaping reality.", img: "https://via.placeholder.com/200?text=CelestialArchitect" },
+            { name: "Void Monarch", desc: "Banish enemies to a dimensionless void or draw power from nothingness.", img: "https://via.placeholder.com/200?text=VoidMonarch" },
+            { name: "Astral Sovereign", desc: "Command constellations to rain meteors or guide lost travelers.", img: "https://via.placeholder.com/200?text=AstralSovereign" },
+            { name: "Eternal Oracle", desc: "See all possible futures and choose the optimal path.", img: "https://via.placeholder.com/200?text=EternalOracle" },
+            { name: "Cosmic Alchemist", desc: "Transmute matter into rare elements or powerful artifacts.", img: "https://via.placeholder.com/200?text=CosmicAlchemist" },
+            { name: "Starlight Paladin", desc: "Wield a blade of pure starlight to cut through dimensions.", img: "https://via.placeholder.com/200?text=StarlightPaladin" },
+            { name: "Nebula Weaver", desc: "Create protective mists that confuse enemies or heal allies.", img: "https://via.placeholder.com/200?text=NebulaWeaver" },
+            { name: "Pulsar Knight", desc: "Emit rhythmic energy bursts to disrupt machines or minds.", img: "https://via.placeholder.com/200?text=PulsarKnight" },
+            { name: "Quantum Enforcer", desc: "Alter probability to ensure victory or cause enemy failure.", img: "https://via.placeholder.com/200?text=QuantumEnforcer" },
+            { name: "Galactic Harbinger", desc: "Summon comets to devastate planets or herald new eras.", img: "https://via.placeholder.com/200?text=GalacticHarbinger" }
         ];
+
+        const chaosPowers = [
+            { name: "Entropy Lord", desc: "Cause random decay or explosions, reshaping battlefields chaotically.", img: "https://via.placeholder.com/200?text=EntropyLord" },
+            { name: "Paradox Trickster", desc: "Create logical impossibilities to confuse or trap enemies.", img: "https://via.placeholder.com/200?text=ParadoxTrickster" },
+            { name: "Anomaly Weaver", desc: "Spawn unpredictable anomalies that aid or harm at random.", img: "https://via.placeholder.com/200?text=AnomalyWeaver" },
+            { name: "Oblivion Jester", desc: "Erase small portions of reality temporarily for strategic advantage.", img: "https://via.placeholder.com/200?text=OblivionJester" },
+            { name: "Fractal Phantom", desc: "Split into infinite copies, each with a fraction of your power.", img: "https://via.placeholder.com/200?text=FractalPhantom" },
+            { name: "Chaos Conduit", desc: "Channel raw chaos to empower allies or destabilize foes.", img: "https://via.placeholder.com/200?text=ChaosConduit" },
+            { name: "Nullpoint Sorcerer", desc: "Create zones of absolute nothingness, erasing threats.", img: "https://via.placeholder.com/200?text=NullpointSorcerer" },
+            { name: "Rift Dancer", desc: "Leap through unstable rifts to teleport or surprise enemies.", img: "https://via.placeholder.com/200?text=RiftDancer" },
+            { name: "Singularity Sage", desc: "Collapse reality into a single point for massive damage.", img: "https://via.placeholder.com/200?text=SingularitySage" },
+            { name: "Primal Flux", desc: "Unleash uncontrolled energy waves that mutate environments.", img: "https://via.placeholder.com/200?text=PrimalFlux" }
+        ];
+
+        const animals = [
+            { name: "Celestial Dragon", desc: "A majestic dragon that commands the stars, breathing cosmic fire.", img: "https://img.freepik.com/free-photo/anime-dragon-illustration_23-2151117575.jpg?t=st=1744625822~exp=1744629422~hmac=4f0e8db49456dc08432c30cde837a951faa395eff64d591cd8c7e0a8cb642781&w=1380", rarity: "legendary" },
+            { name: "Void Phoenix", desc: "A phoenix reborn from nothingness, its flames heal or destroy.", img: "https://img.freepik.com/free-vector/hand-drawn-phoenix-concept_23-2148500635.jpg?t=st=1744625897~exp=1744629497~hmac=6515474b8ead0c9e787f663a575d2af70f06a8c077ef514cbc2195d52945fe94&w=826", rarity: "legendary" },
+            { name: "Astral Unicorn", desc: "A unicorn whose horn channels astral energy to warp reality.", img: "https://img.freepik.com/free-photo/fantastic-animal-constellation_23-2151708322.jpg?t=st=1744625978~exp=1744629578~hmac=6daa4824030348d0bb08596e64b9237af441ec4d41d857ba1b4aa5d4d8c649a0&w=1380", rarity: "mythic" },
+            { name: "Ethereal Leviathan", desc: "A massive sea serpent that manipulates time with its tides.", img: "https://img.freepik.com/free-photo/beautiful-whale-digital-art_23-2151674066.jpg?t=st=1744626063~exp=1744629663~hmac=94b52ccb5f69da18ee9871e6cffa5b80bd304b2e607fdae83b01985c78e02d7c&w=1380", rarity: "mythic" },
+            { name: "Starlight Griffin", desc: "A griffin with wings that shimmer like galaxies, soaring through dimensions.", img: "https://img.freepik.com/free-photo/fantastic-animal-constellation_23-2151708275.jpg?t=st=1744626153~exp=1744629753~hmac=5689717301bfbbf730976e6cf57220121a5b10f5e5ebf3fdddb9338f9dcc1c7a&w=1380", rarity: "mythic" },
+            { name: "Crystal Wolf", desc: "A wolf with crystalline fur, reflecting attacks with radiant light.", img: "https://img.freepik.com/free-photo/portrait-animal-meditating-practicing-mindfulness-digital-art-style_23-2151506868.jpg?t=st=1744626219~exp=1744629819~hmac=e385609a53535e25e7dd1d80ef52b86a1fbf4329db2696bb86c7421a329786ac&w=740", rarity: "epic" },
+            { name: "Thunder snake", desc: "An eagle that summons storms with each flap of its wings.", img: "https://img.freepik.com/free-photo/fantasy-snake-illustration_23-2151588902.jpg?t=st=1744626281~exp=1744629881~hmac=bc18e92aaa81c6364b968ecf75a52c52899d4a79fd5926c6284321a8859720aa&w=740", rarity: "epic" },
+            { name: "Shadow Panther", desc: "A stealthy panther that merges with shadows to strike unseen.", img: "https://img.freepik.com/free-photo/ferocious-tiger-studio_23-2150875505.jpg?t=st=1744626333~exp=1744629933~hmac=406e0cf7c784c107b57607f90501e760d932912681f0cff29cf75cfb65286638&w=1380", rarity: "epic" },
+            { name: "Solar Lion", desc: "A lion with a mane of solar flares, radiating intense heat.", img: "https://img.freepik.com/free-photo/fantastic-animal-constellation_23-2151708236.jpg?t=st=1744626369~exp=1744629969~hmac=318166879e85fd5e8fb199c2b1e5254b3f490b0a2b0ca8a14b06604d48942fcd&w=740", rarity: "epic" },
+            { name: "Lunar Owl", desc: "An owl that sees through time, guiding allies with foresight.", img: "https://img.freepik.com/free-photo/photorealistic-view-owl-bird-night_23-2151464585.jpg?t=st=1744626418~exp=1744630018~hmac=9b5b2fd648d17ab9bc90cab05fe6560ed1efbdd85fbb37f6ee7a54efdbfaf3f2&w=1380", rarity: "epic" },
+            { name: "flame kong", desc: "An owl that sees through time, guiding allies with foresight.", img: "https://img.freepik.com/free-photo/bigfoot-represented-neon-glow_23-2151322945.jpg?t=st=1744627941~exp=1744631541~hmac=ba195913d83f83dd917bc1853e802507bb9a7b49aa4d2f8c83b6d13916b38e3f&w=1060", rarity: "epic" }
+        ];
+
+        const rankWallpapers = {
+            Z: "https://img.freepik.com/free-vector/realistic-luxury-background_23-2149338707.jpg",
+            X: "https://img.freepik.com/free-vector/realistic-thunderstorm-effects-with-bright-red-orange-flashes-lightnings-night-sky_1284-33524.jpg",
+            S: "https://img.freepik.com/free-photo/full-shot-ninja-wearing-equipment_23-2150960902.jpg",
+            A: "https://img.freepik.com/free-photo/challenger-stands-front-spooky-castle-illustration_456031-14.jpg",
+            B: "https://img.freepik.com/free-photo/green-neon-light-stars-background_1017-2770.jpg",
+            C: "https://img.freepik.com/free-photo/blue-space-wallpaper_1017-3761.jpg",
+            D: "https://img.freepik.com/free-vector/vector-banner-illustration-lightning-thunder-abstract-blue-background-with-neon-sparkles-light_528282-302.jpg",
+            E: "https://img.freepik.com/free-photo/fantasy-scene-anime-style_23-2151135281.jpg",
+            F: "https://cdn.pixabay.com/photo/2024/03/04/14/17/ai-generated-8612487_1280.jpg",
+            G: "https://cdn.pixabay.com/photo/2023/02/20/20/44/ai-generated-7803074_1280.jpg"
+        };
 
         let currentStep = 1;
         let playerData = {};
+        let luckStreak = 0;
+        let savedCards = JSON.parse(localStorage.getItem('destinyVault')) || [];
+
+        function calculateLuckScore(name, luckyNumber) {
+            let score = 0;
+            const vowels = name.match(/[aeiou]/gi)?.length || 0;
+            const uniqueLetters = new Set(name.toLowerCase()).size;
+            score += vowels * 15 + uniqueLetters * 10;
+            if (luckyNumber % 7 === 0) score += 75;
+            if (luckyNumber.toString().includes('7')) score += 50;
+            if (luckyNumber > 900) score += 30;
+            const now = new Date();
+            if (now.getSeconds() % 3 === 0) score += 40;
+            if (name.toLowerCase().includes("lucky")) score += 100;
+            return score;
+        }
+
+        function assignClanPower(clanNumber) {
+            const clanHalf = Math.floor(clanNumber / 2);
+            const eligibleRanges = [
+                clanHalf >= 3 && clanHalf <= 5,
+                clanHalf >= 300 && clanHalf <= 350,
+                clanHalf >= 3000 && clanHalf <= 3500
+            ];
+            if (eligibleRanges.some(range => range)) {
+                const powerIndex = Math.floor(Math.random() * clanPowers.length);
+                return clanPowers[powerIndex];
+            }
+            return null;
+        }
 
         function startGame() {
             const name = document.getElementById("playerName").value.trim();
-            if (!name) return alert("Please enter your name!");
+            const clanNumber = parseInt(document.getElementById("clanNumber").value.trim());
+            if (!name || isNaN(clanNumber)) return alert("कृपया अपना नाम और क्लैन नंबर दर्ज करें!");
 
-            // Calculate Rank
+            const luckyNumber = Math.floor(Math.random() * 999) + 1;
+            const luckScore = calculateLuckScore(name, luckyNumber);
             let sum = 0;
             for (let char of name.toUpperCase()) {
                 if (char >= 'A' && char <= 'Z') sum += char.charCodeAt(0) - 64;
             }
-            const luckyNumber = Math.floor(Math.random() * 999) + 1;
             sum += luckyNumber;
             const avg = sum / (name.length + luckyNumber.toString().length);
             let rank;
 
-            // Determine rank with rare ranks included
             const luckyNumberSum = luckyNumber.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
-            if (luckyNumber.toString().includes('0')) {
-                rank = "S"; // Legendary rank if lucky number contains 0
-            } else if (sum === 0 && luckyNumberSum === 0) {
-                rank = "X"; // Mythic rank if both sums are zero
+            if (luckyNumber.toString().includes('0') && luckScore > 150) {
+                rank = "Z";
+            } else if (name.toLowerCase() === "neo" || luckyNumber === 777) {
+                rank = "X";
+            } else if (luckScore > 200) {
+                rank = "S";
             } else {
                 rank = avg <= 4 ? "G" : avg <= 8 ? "F" : avg <= 12 ? "E" : avg <= 16 ? "D" : avg <= 20 ? "C" : avg <= 24 ? "B" : "A";
             }
 
-            playerData = { name, rank, luckyNumber };
-            document.getElementById("rankResult").innerText = `${name}, Your Rank: ${rank}`;
+            if (['Z', 'X', 'S'].includes(rank)) luckStreak++;
+            else luckStreak = Math.max(0, luckStreak - 1);
+
+            playerData = { name, rank, luckyNumber, luckScore, clanNumber };
+            playerData.clanPower = assignClanPower(clanNumber);
+            document.getElementById("rankResult").innerHTML = `
+                <img src="${rankWallpapers[rank]}" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
+                <br>${name}, आपका रैंक: ${rank} ${luckStreak > 2 ? "(लकी स्ट्रीक!)" : ""}<br>
+                क्लैन नंबर: ${clanNumber}${playerData.clanPower ? `<br>क्लैन शक्ति: ${playerData.clanPower.name}` : ""}
+            `;
             switchStep(2);
         }
 
         function showLuckyNumber() {
+            if (!playerData.luckyNumber) {
+                alert("त्रुटि: कृपया पुनः शुरू करें.");
+                resetGame();
+                return;
+            }
             const luckyNumber = playerData.luckyNumber;
             const luckyNumberStr = luckyNumber.toString();
             let selectedShapes = [];
 
-            // Assign shapes based on lucky number digits
             for (let digit of luckyNumberStr) {
-                selectedShapes.push(shapes[parseInt(digit) - 1]);
+                const index = parseInt(digit) - 1;
+                if (shapes[index]) selectedShapes.push(shapes[index]);
             }
 
-            // Assign extra shapes for Legendary and Mythic ranks
-            if (playerData.rank === "Legendary" || playerData.rank === "Mythic") {
-                const extraShapeCount = playerData.rank === "Legendary" ? 1 : 2;
+            if (['Z', 'X', 'S'].includes(playerData.rank) || luckStreak > 2) {
+                const extraShapeCount = playerData.rank === "Z" ? 4 : playerData.rank === "X" ? 3 : 2;
                 for (let i = 0; i < extraShapeCount; i++) {
                     selectedShapes.push(extraShapes[Math.floor(Math.random() * extraShapes.length)]);
                 }
             }
 
+            if (playerData.clanNumber) {
+                const clanHalf = Math.floor(playerData.clanNumber / 2);
+                const eligibleRanges = [
+                    clanHalf >= 3 && clanHalf <= 5,
+                    clanHalf >= 300 && clanHalf <= 350,
+                    clanHalf >= 3000 && clanHalf <= 3500
+                ];
+                if (eligibleRanges.some(range => range)) {
+                    const extraShapeIndex = clanHalf % extraShapes.length;
+                    const extraShape = extraShapes[extraShapeIndex];
+                    extraShape.extra = true;
+                    selectedShapes.push(extraShape);
+                }
+            }
+
+            if (Math.random() < 0.1 && playerData.luckScore > 150) {
+                selectedShapes.push({ name: "Prism", img: "https://img.freepik.com/free-photo/mystical-prism-glow_23-2151294069.jpg" });
+                playerData.cosmicEvent = "Prism Surge: Unlocks ultimate synergies!";
+            }
+
             playerData.shapes = selectedShapes;
-            document.getElementById("luckyNumber").innerText = `Lucky Number: ${luckyNumber}`;
+            document.getElementById("luckyNumber").innerHTML = `
+                <img src="https://img.freepik.com/free-vector/mystical-wave-glow_23-2148385759.jpg" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
+                <br>भाग्यशाली नंबर: ${luckyNumber}${playerData.cosmicEvent ? ` (${playerData.cosmicEvent})` : ""}<br>
+                ${playerData.clanPower ? `क्लैन शक्ति: ${playerData.clanPower.name}` : ""}
+            `;
             const shapesContainer = document.getElementById("shapesResult");
-            shapesContainer.innerHTML = selectedShapes.map(shape => `<div class="shape">${shape}</div>`).join("");
+            shapesContainer.innerHTML = selectedShapes.map(shape => `
+                <div class="shape ${shape.extra ? 'extra-shape' : ''}" style="background-image: url('${shape.img}');"></div>
+            `).join("");
             switchStep(3);
         }
 
         function showPower() {
-            // Calculate base power index using lucky number and name sum
+            if (!playerData.name || !playerData.luckyNumber || !playerData.luckScore) {
+                alert("त्रुटि: कृपया पुनः शुरू करें.");
+                resetGame();
+                return;
+            }
             const nameSum = playerData.name.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
-            const powerIndex = (playerData.luckyNumber + nameSum) % basePowers.length;
+            const powerIndex = (playerData.luckyNumber + nameSum + playerData.luckScore) % basePowers.length;
             playerData.power = basePowers[powerIndex];
-            document.getElementById("powerResult").innerText = `Power: ${playerData.power}`;
+            document.getElementById("powerResult").innerHTML = `
+                <img src="${playerData.power.img}" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
+                <br>शक्ति: ${playerData.power.name}<br>${playerData.power.desc}
+            `;
             switchStep(4);
         }
 
-        function showBonus() {
-            // Sum the digits of the lucky number
+        function showMythicPower() {
+            if (!playerData.luckyNumber || !playerData.luckScore) {
+                alert("त्रुटि: कृपया पुनः शुरू करें.");
+                resetGame();
+                return;
+            }
             const luckyNumberSum = playerData.luckyNumber.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
-            playerData.bonus = bonusPowers[luckyNumberSum % bonusPowers.length];
-            document.getElementById("bonusResult").innerText = `Bonus Power: ${playerData.bonus}`;
+            const mythicIndex = (luckyNumberSum + playerData.luckScore) % mythicPowers.length;
+            playerData.mythicPower = mythicPowers[mythicIndex];
+            document.getElementById("mythicResult").innerHTML = `
+                <img src="${playerData.mythicPower.img}" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
+                <br>मिथकीय शक्ति: ${playerData.mythicPower.name}<br>${playerData.mythicPower.desc}
+            `;
             switchStep(5);
         }
 
-        function showFinalCard() {
-            const card = document.getElementById("finalCard");
-            card.innerHTML = `
-                <h3>${playerData.name}'s Power Card</h3>
-                <p>Rank: ${playerData.rank}</p>
-                <p>Lucky Number: ${playerData.luckyNumber}</p>
-                <p>Shapes: ${playerData.shapes.join(", ")}</p>
-                <p>Base Power: ${playerData.power}</p>
-                <p>Bonus Power: ${playerData.bonus}</p>
+        function showChaosPower() {
+            if (!playerData.luckyNumber || !playerData.luckScore) {
+                alert("त्रुटि: कृपया पुनः शुरू करें.");
+                resetGame();
+                return;
+            }
+            const chaosIndex = Math.floor((playerData.luckyNumber + playerData.luckScore + Math.random() * 100) % chaosPowers.length);
+            playerData.chaosPower = chaosPowers[chaosIndex];
+            document.getElementById("chaosResult").innerHTML = `
+                <img src="${playerData.chaosPower.img}" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
+                <br>अराजकता की शक्ति: ${playerData.chaosPower.name}<br>${playerData.chaosPower.desc}
             `;
             switchStep(6);
         }
 
+        function calculateSynergy(shapes = playerData.shapes) {
+            const shapeNames = shapes.map(s => s.name);
+            let synergy = "कोई सिनर्जी नहीं मिली";
+            if (shapeNames.includes("Star") && shapeNames.includes("Spiral")) {
+                synergy = "स्टार स्पाइरल सिनर्जी: +75% शक्ति की ताकत!";
+            } else if (shapeNames.includes("Prism")) {
+                synergy = "प्रिज्म सिनर्जी: सभी शक्तियों को अधिकतम संभावना!";
+            } else if (shapeNames.length > 6) {
+                synergy = "ओवरलोड सिनर्जी: यादृच्छिक ब्रह्मांडीय बूस्ट!";
+            }
+            return synergy;
+        }
+
+        function showFinalCard() {
+            if (!playerData.name || !playerData.rank || !playerData.luckyNumber || !playerData.shapes || !playerData.power || !playerData.mythicPower || !playerData.chaosPower) {
+                alert("त्रुटि: अधूरी जानकारी. कृपया पुनः शुरू करें.");
+                resetGame();
+                return;
+            }
+            const card = document.getElementById("finalCard");
+            const wallpaper = rankWallpapers[playerData.rank] || "https://img.freepik.com/free-vector/mystical-wave-glow_23-2148385759.jpg";
+            card.style.backgroundImage = `url('${wallpaper}')`;
+            card.innerHTML = `
+                <div class="card-content">
+                    <h3>${playerData.name} का सेलेस्टियल कार्ड</h3>
+                    <p>रैंक: ${playerData.rank} ${luckStreak > 2 ? "(लकी स्ट्रीक!)" : ""}</p>
+                    <p>क्लैन नंबर: ${playerData.clanNumber}</p>
+                    <p>भाग्यशाली नंबर: ${playerData.luckyNumber}</p>
+                    <p>आकार:</p>
+                    <div class="shapes-small">
+                        ${playerData.shapes.map(s => `<img src="${s.img}" alt="${s.name}" title="${s.name}">`).join("")}
+                    </div>
+                    <p>मूल शक्ति: ${playerData.power.name}</p>
+                    <p>${playerData.power.desc}</p>
+                    <p>मिथकीय शक्ति: ${playerData.mythicPower.name}</p>
+                    <p>${playerData.mythicPower.desc}</p>
+                    <p>अराजकता की शक्ति: ${playerData.chaosPower.name}</p>
+                    <p>${playerData.chaosPower.desc}</p>
+                    ${playerData.clanPower ? `
+                        <p>क्लैन शक्ति: ${playerData.clanPower.name}</p>
+                        <p>${playerData.clanPower.desc}</p>
+                    ` : `<p>क्लैन शक्ति: कोई नहीं</p>`}
+                    ${playerData.summonedAnimal ? `
+                        <p>सम्मन किया गया जानवर: ${playerData.summonedAnimal.name} (${playerData.summonedAnimal.rarity.charAt(0).toUpperCase() + playerData.summonedAnimal.rarity.slice(1)})</p>
+                        <p>${playerData.summonedAnimal.desc}</p>
+                    ` : `<p>सम्मन किया गया जानवर: कोई नहीं</p>`}
+                    ${playerData.cosmicEvent ? `<p>कॉस्मिक इवेंट: ${playerData.cosmicEvent}</p>` : ""}
+                </div>
+                <div class="card-images">
+                    <img src="${playerData.power.img}" alt="${playerData.power.name}">
+                    <img src="${playerData.mythicPower.img}" alt="${playerData.mythicPower.name}">
+                    <img src="${playerData.chaosPower.img}" alt="${playerData.chaosPower.name}">
+                    ${playerData.clanPower ? `<img src="${playerData.clanPower.img}" alt="${playerData.clanPower.name}">` : ""}
+                    ${playerData.summonedAnimal ? `<img src="${playerData.summonedAnimal.img}" alt="${playerData.summonedAnimal.name}">` : ""}
+                </div>
+            `;
+            document.getElementById("synergyVisualizer").innerHTML = `
+                सिनर्जी: ${calculateSynergy()}
+            `;
+            savedCards.push(playerData);
+            localStorage.setItem('destinyVault', JSON.stringify(savedCards));
+            switchStep(7);
+        }
+
         function resetGame() {
             playerData = {};
-            switchStep(1);
+            luckStreak = 0;
             document.getElementById("playerName").value = "";
+            document.getElementById("clanNumber").value = "";
+            switchStep(1);
         }
 
         function switchStep(step) {
-            document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
-            document.getElementById(`step${step}`).classList.add("active");
+            document.querySelectorAll(".step").forEach(s => {
+                s.classList.remove("active");
+                s.style.opacity = "0";
+                s.style.transform = "translateZ(-100px)";
+            });
+            const activeStep = document.getElementById(`step${step}`);
+            activeStep.classList.add("active");
+            activeStep.style.opacity = "1";
+            activeStep.style.transform = "translateZ(0)";
             currentStep = step;
             updateProgressBar();
         }
 
         function updateProgressBar() {
             const progress = document.getElementById("progress");
-            progress.style.width = `${(currentStep / 6) * 100}%`;
+            progress.style.width = `${(currentStep / 7) * 100}%`;
         }
 
         function toggleManualSearch() {
-            const manualSearchContainer = document.getElementById("manualSearchContainer");
-            manualSearchContainer.classList.toggle("active");
+            document.getElementById("manualSearchContainer").classList.toggle("active");
+        }
+
+        function toggleVault() {
+            document.getElementById("vaultContainer").classList.toggle("active");
+        }
+
+        function toggleTrials() {
+            document.getElementById("trialsContainer").classList.toggle("active");
+        }
+
+        function toggleCodex() {
+            document.getElementById("codexContainer").classList.toggle("active");
+        }
+
+        function toggleSummoningSpin() {
+            document.getElementById("summoningContainer").classList.toggle("active");
+        }
+
+        function startSummoningSpin() {
+            if (!playerData.name || !playerData.luckyNumber || !playerData.luckScore) {
+                alert("कृपया पहले गेम शुरू करें!");
+                return;
+            }
+
+            const spinner = document.getElementById("summoningSpinner");
+            const result = document.getElementById("summoningResult");
+            spinner.innerHTML = `<div class="spinner-slot"></div>`;
+            result.innerHTML = "";
+
+            // Simulate spinning
+            let spinCount = 0;
+            const spinInterval = setInterval(() => {
+                const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
+                spinner.querySelector(".spinner-slot").style.backgroundImage = `url('${randomAnimal.img}')`;
+                spinCount++;
+                if (spinCount >= 30) {
+                    clearInterval(spinInterval);
+                    // Determine summoned animal
+                    let weights = animals.map(animal => {
+                        let weight = 1;
+                        if (animal.rarity === "legendary" && playerData.rank === "Z") weight *= 3;
+                        else if (animal.rarity === "legendary" && playerData.rank === "X") weight *= 2;
+                        else if (animal.rarity === "mythic" && playerData.rank === "S") weight *= 2;
+                        if (playerData.luckScore > 200) weight *= 1.5;
+                        if (playerData.luckyNumber % 7 === 0) weight *= 1.2;
+                        return weight;
+                    });
+                    const totalWeight = weights.reduce((sum, w) => sum + w, 0);
+                    let random = Math.random() * totalWeight;
+                    let selectedIndex = 0;
+                    for (let i = 0; i < weights.length; i++) {
+                        random -= weights[i];
+                        if (random <= 0) {
+                            selectedIndex = i;
+                            break;
+                        }
+                    }
+                    const summonedAnimal = animals[selectedIndex];
+                    playerData.summonedAnimal = summonedAnimal;
+                    spinner.innerHTML = "";
+                    result.innerHTML = `
+                        <img src="${summonedAnimal.img}" class="rarity-${summonedAnimal.rarity}">
+                        <p>${summonedAnimal.name} (${summonedAnimal.rarity.charAt(0).toUpperCase() + summonedAnimal.rarity.slice(1)})</p>
+                        <p>${summonedAnimal.desc}</p>
+                    `;
+                }
+            }, 100);
         }
 
         function manualSearch() {
             const name = document.getElementById("manualName").value.trim();
             const luckyNumber = parseInt(document.getElementById("manualLuckyNumber").value.trim());
-            if (!name || isNaN(luckyNumber)) return alert("Please enter valid name and lucky number!");
+            const clanNumber = parseInt(document.getElementById("manualClanNumber").value.trim());
+            if (!name || isNaN(luckyNumber) || isNaN(clanNumber)) return alert("कृपया सही नाम, भाग्यशाली नंबर और क्लैन नंबर दर्ज करें!");
 
-            // Calculate Rank
+            const luckScore = calculateLuckScore(name, luckyNumber);
             let sum = 0;
             for (let char of name.toUpperCase()) {
                 if (char >= 'A' && char <= 'Z') sum += char.charCodeAt(0) - 64;
@@ -545,70 +1094,173 @@
             const avg = sum / (name.length + luckyNumber.toString().length);
             let rank;
 
-            // Determine rank with rare ranks included
             const luckyNumberSum = luckyNumber.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
-            if (luckyNumber.toString().includes('0')) {
-                rank = "Legendary"; // Legendary rank if lucky number contains 0
-            } else if (sum === 0 && luckyNumberSum === 0) {
-                rank = "Mythic"; // Mythic rank if both sums are zero
+            if (luckyNumber.toString().includes('0') && luckScore > 150) {
+                rank = "Z";
+            } else if (name.toLowerCase() === "neo" || luckyNumber === 777) {
+                rank = "X";
+            } else if (luckScore > 200) {
+                rank = "S";
             } else {
                 rank = avg <= 4 ? "G" : avg <= 8 ? "F" : avg <= 12 ? "E" : avg <= 16 ? "D" : avg <= 20 ? "C" : avg <= 24 ? "B" : "A";
             }
 
-            // Assign shapes based on lucky number digits
             let selectedShapes = [];
             const luckyNumberStr = luckyNumber.toString();
             for (let digit of luckyNumberStr) {
-                selectedShapes.push(shapes[parseInt(digit) - 1]);
+                const index = parseInt(digit) - 1;
+                if (shapes[index]) selectedShapes.push(shapes[index]);
             }
 
-            // Assign extra shapes for Legendary and Mythic ranks
-            if (rank === "Legendary" || rank === "Mythic") {
-                const extraShapeCount = rank === "Legendary" ? 1 : 2;
+            if (['Z', 'X', 'S'].includes(rank)) {
+                const extraShapeCount = rank === "Z" ? 4 : rank === "X" ? 3 : 2;
                 for (let i = 0; i < extraShapeCount; i++) {
                     selectedShapes.push(extraShapes[Math.floor(Math.random() * extraShapes.length)]);
                 }
             }
 
-            // Calculate base power index using lucky number and name sum
-            const nameSum = name.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
-            const powerIndex = (luckyNumber + nameSum) % basePowers.length;
-            const power = basePowers[powerIndex];
+            const clanPower = assignClanPower(clanNumber);
+            if (clanNumber) {
+                const clanHalf = Math.floor(clanNumber / 2);
+                const eligibleRanges = [
+                    clanHalf >= 3 && clanHalf <= 5,
+                    clanHalf >= 300 && clanHalf <= 350,
+                    clanHalf >= 3000 && clanHalf <= 3500
+                ];
+                if (eligibleRanges.some(range => range)) {
+                    const extraShapeIndex = clanHalf % extraShapes.length;
+                    const extraShape = extraShapes[extraShapeIndex];
+                    extraShape.extra = true;
+                    selectedShapes.push(extraShape);
+                }
+            }
 
-            // Sum the digits of the lucky number
-            const bonus = bonusPowers[luckyNumberSum % bonusPowers.length];
+            const nameSum = name.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+            const powerIndex = (luckyNumber + nameSum + luckScore) % basePowers.length;
+            const mythicIndex = (luckyNumberSum + luckScore) % mythicPowers.length;
+            const chaosIndex = (luckyNumber + luckScore + Math.random() * 100) % chaosPowers.length;
 
             document.getElementById("manualResult").innerHTML = `
-                <h3>${name}'s Power Card</h3>
-                <p>Rank: ${rank}</p>
-                <p>Lucky Number: ${luckyNumber}</p>
-                <p>Shapes: ${selectedShapes.join(", ")}</p>
-                <p>Base Power: ${power}</p>
-                <p>Bonus Power: ${bonus}</p>
+                <img src="${rankWallpapers[rank]}" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
+                <h3>${name} का सेलेस्टियल कार्ड</h3>
+                <p>रैंक: ${rank}</p>
+                <p>क्लैन नंबर: ${clanNumber}</p>
+                <p>भाग्यशाली नंबर: ${luckyNumber}</p>
+                <p>आकार: ${selectedShapes.map(s => s.name).join(", ")}</p>
+                <p>मूल शक्ति: ${basePowers[powerIndex].name}</p>
+                <p>${basePowers[powerIndex].desc}</p>
+                <p>मिथकीय शक्ति: ${mythicPowers[mythicIndex].name}</p>
+                <p>${mythicPowers[mythicIndex].desc}</p>
+                <p>अराजकता की शक्ति: ${chaosPowers[chaosIndex].name}</p>
+                <p>${chaosPowers[chaosIndex].desc}</p>
+                ${clanPower ? `
+                    <p>क्लैन शक्ति: ${clanPower.name}</p>
+                    <p>${clanPower.desc}</p>
+                ` : `<p>क्लैन शक्ति: कोई नहीं</p>`}
+                <p>सिनर्जी: ${calculateSynergy(selectedShapes)}</p>
             `;
         }
 
-        // Add sound effects and background music
-        const clickSound = new Audio('path/to/click.mp3');
-        const backgroundMusic = new Audio('path/to/background.mp3');
+        function viewVault() {
+            const vaultResult = document.getElementById("vaultResult");
+            if (savedCards.length === 0) {
+                vaultResult.innerHTML = `
+                    <img src="https://img.freepik.com/free-photo/mystical-empty-glow_23-2150327764.jpg" style="width: 100%; border-radius: 10px;">
+                    <br>अभी तक कोई भाग्य सुरक्षित नहीं!
+                `;
+            } else {
+                vaultResult.innerHTML = savedCards.map(card => `
+                    <img src="${rankWallpapers[card.rank]}" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
+                    <p>${card.name} का कार्ड: रैंक ${card.rank}, भाग्यशाली नंबर ${card.luckyNumber}, क्लैन ${card.clanNumber}${card.summonedAnimal ? `, सम्मन: ${card.summonedAnimal.name}` : ""}</p>
+                `).join("");
+            }
+        }
+
+        function startTrial() {
+            const trialResult = document.getElementById("trialResult");
+            const challenge = Math.random() > 0.5 ? "वॉयड बीस्ट को हराएं!" : "नेबुला मेज़ को नेविगेट करें!";
+            trialResult.innerHTML = `
+                <img src="https://img.freepik.com/free-vector/mystical-wave-glow_23-2148385759.jpg" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
+                <br>चुनौती: ${challenge}<br>अपनी शक्तियों का समझदारी से उपयोग करें!
+            `;
+        }
+
+        function viewCodex() {
+            const codexResult = document.getElementById("codexResult");
+            codexResult.innerHTML = `
+                <img src="https://img.freepik.com/free-vector/mystical-codex-glow_23-2149717746.jpg" style="width: 100%; border-radius: 10px; margin-bottom: 10px;">
+                <br>नexus of Eternity में आपकी किस्मत को आकार देने की शक्ति है...
+            `;
+        }
+
+        // Particle Effects
+        const canvas = document.getElementById("particleCanvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particles = [];
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 4 + 1;
+                this.speedX = Math.random() * 1.5 - 0.75;
+                this.speedY = Math.random() * 1.5 - 0.75;
+                this.color = `hsl(${Math.random() * 60 + 180}, 70%, 80%)`;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.015;
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function handleParticles() {
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                if (particles[i].size <= 0.2) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            if (Math.random() < 0.15) particles.push(new Particle());
+            handleParticles();
+            requestAnimationFrame(animateParticles);
+        }
+
+        animateParticles();
+
+        // Audio
+        const clickSound = new Audio('https://freesound.org/data/previews/171/171671_2437358-lq.mp3');
+        const backgroundMusic = new Audio('https://www.bensound.com/bensound-music/bensound-memories.mp3');
         backgroundMusic.loop = true;
-        backgroundMusic.volume = 0.5;
+        backgroundMusic.volume = 0.3;
 
         document.querySelectorAll('button').forEach(button => {
-            button.addEventListener('click', () => {
-                clickSound.play();
-            });
+            button.addEventListener('click', () => clickSound.play());
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            backgroundMusic.play();
+            backgroundMusic.play().catch(err => console.log("Audio play failed:", err));
         });
 
-        // Add mute functionality
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'm') {
-                backgroundMusic.muted = !backgroundMusic.muted;
-            }
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         });
     </script>
 </body>
