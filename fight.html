@@ -154,7 +154,7 @@
       width: 80px;
       height: 80px;
       background-size: cover;
-      border-radius: 10ikers
+      border-radius: 10px;
       animation: spinAnimation 0.1s linear infinite;
       box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
     }
@@ -195,22 +195,9 @@
       0% { box-shadow: 0 0 20px #1e90ff; }
       100% { box-shadow: 0 0 40px #1e90ff; }
     }
-    .turn-timer {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(10, 10, 40, 0.95);
-      padding: 10px 20px;
-      border-radius: 10px;
-      border: 2px solid #ffd700;
-      color: #ffd700;
-      font-family: 'Audiowide', sans-serif;
-      text-shadow: 0 0 5px #ffd700;
-    }
     .move-preview {
       position: absolute;
-      top: 80px;
+      top: 20px;
       left: 50%;
       transform: translateX(-50%);
       background: rgba(10, 10, 40, 0.95);
@@ -257,7 +244,6 @@
       .player-card { width: 250px; height: 350px; }
       .card-content h2 { font-size: 1.5em; }
       .avatar-img { width: 80px; height: 80px; }
-      .turn-timer { font-size: 0.8em; padding: 8px 16px; }
       .move-preview { max-width: 300px; font-size: 0.8em; }
     }
   </style>
@@ -306,7 +292,6 @@
 
   <!-- Battle Screen -->
   <div id="battleScreen" class="hidden absolute inset-0 text-white z-10">
-    <div class="turn-timer" id="turnTimer">Turn Time: 30s</div>
     <div class="move-preview" id="movePreview"></div>
     <div class="flex justify-between p-4">
       <div id="player1Card" class="player-card">
@@ -512,7 +497,6 @@
       player1: { name: '', rank: '', hp: 100, summonedAnimal: null, lastMove: '', lastPower: 0, combo: 0, lastMoveType: '' },
       player2: { name: '', rank: '', hp: 100, summonedAnimal: null, lastMove: '', lastPower: 0, combo: 0, lastMoveType: '' },
       currentTurn: 0,
-      turnTime: 30,
       hazardsActive: false,
     };
     let savedCards = JSON.parse(localStorage.getItem('destinyVault')) || [];
@@ -609,25 +593,6 @@
         'Punch', 'Kick', 'Slash', 'Wave', 'Burst', 'Strike', 'Smash', 'Claw', 'Arrow', 'Spin'
       ]
     };
-
-    // Turn Timer
-    let turnTimerInterval;
-    function startTurnTimer() {
-      gameState.turnTime = 30;
-      document.getElementById('turnTimer').textContent = `Turn Time: ${gameState.turnTime}s`;
-      clearInterval(turnTimerInterval);
-      turnTimerInterval = setInterval(() => {
-        gameState.turnTime--;
-        document.getElementById('turnTimer').textContent = `Turn Time: ${gameState.turnTime}s`;
-        if (gameState.turnTime <= 0) {
-          clearInterval(turnTimerInterval);
-          // Auto-execute with default moves if time runs out
-          document.getElementById('player1MoveInput').value = document.getElementById('player1MoveInput').value || 'Default Move';
-          document.getElementById('player2MoveInput').value = document.getElementById('player2MoveInput').value || 'Default Move';
-          document.getElementById('executeMove').click();
-        }
-      }, 1000);
-    }
 
     // Health Regeneration
     function regenerateHealth() {
@@ -853,7 +818,6 @@
       document.getElementById('player1Card').style.backgroundImage = `url('${rankWallpapers[gameState.player1.rank]}')`;
       document.getElementById('player2Card').style.backgroundImage = `url('${rankWallpapers[gameState.player2.rank]}')`;
       updateHPBars();
-      startTurnTimer();
     });
 
     document.getElementById('player1MoveInput').addEventListener('input', () => {
@@ -904,22 +868,36 @@
     });
 
     document.getElementById('executeMove').addEventListener('click', () => {
-      const p1Move = document.getElementById('player1MoveInput').value || 'Default Move';
-      const p2Move = document.getElementById('player2MoveInput').value || 'Default Move';
+      const p1Move = document.getElementById('player1MoveInput').value;
+      const p2Move = document.getElementById('player2MoveInput').value;
 
-      const p1Result = calculateMovePower(p1Move, gameState.player1.rank, gameState.player1.combo);
-      const p2Result = calculateMovePower(p2Move, gameState.player2.rank, gameState.player2.combo);
+      let p1Result = { power: 0, category: '', isCritical: false };
+      let p2Result = { power: 0, category: '', isCritical: false };
 
-      gameState.player1.lastMove = p1Move;
-      gameState.player1.lastPower = p1Result.power;
-      gameState.player2.lastMove = p2Move;
-      gameState.player2.lastPower = p2Result.power;
+      // Calculate move power only if a move is entered
+      if (p1Move) {
+        p1Result = calculateMovePower(p1Move, gameState.player1.rank, gameState.player1.combo);
+        gameState.player1.lastMove = p1Move;
+        gameState.player1.lastPower = p1Result.power;
+        gameState.player1.combo = updateCombo(gameState.player1, p1Result.category);
+        playAttackAnimation(p1Move, document.getElementById('player1Card'), p1Result.isCritical);
+      }
 
-      gameState.player1.combo = updateCombo(gameState.player1, p1Result.category);
-      gameState.player2.combo = updateCombo(gameState.player2, p2Result.category);
+      if (p2Move) {
+        p2Result = calculateMovePower(p2Move, gameState.player2.rank, gameState.player2.combo);
+        gameState.player2.lastMove = p2Move;
+        gameState.player2.lastPower = p2Result.power;
+        gameState.player2.combo = updateCombo(gameState.player2, p2Result.category);
+        playAttackAnimation(p2Move, document.getElementById('player2Card'), p2Result.isCritical);
+      }
 
-      gameState.player2.hp = Math.max(0, gameState.player2.hp - p1Result.power);
-      gameState.player1.hp = Math.max(0, gameState.player1.hp - p2Result.power);
+      // Apply damage only if the opponent has a move
+      if (p1Move) {
+        gameState.player2.hp = Math.max(0, gameState.player2.hp - p1Result.power);
+      }
+      if (p2Move) {
+        gameState.player1.hp = Math.max(0, gameState.player1.hp - p2Result.power);
+      }
 
       // Check for hazard damage
       hazards.forEach(hazard => {
@@ -940,14 +918,17 @@
 
       // Update Battle Log
       const battleLog = document.getElementById('battleLog');
-      battleLog.innerHTML = `
-        <p>${gameState.player1.name} uses ${p1Move} for ${p1Result.power.toFixed(1)} damage${p1Result.isCritical ? ' (Critical)' : ''}!</p>
-        <p>${gameState.player2.name} uses ${p2Move} for ${p2Result.power.toFixed(1)} damage${p2Result.isCritical ? ' (Critical)' : ''}!</p>
-      `;
-
-      // Play Animations
-      playAttackAnimation(p1Move, document.getElementById('player1Card'), p1Result.isCritical);
-      playAttackAnimation(p2Move, document.getElementById('player2Card'), p2Result.isCritical);
+      battleLog.innerHTML = '';
+      if (p1Move) {
+        battleLog.innerHTML += `<p>${gameState.player1.name} uses ${p1Move} for ${p1Result.power.toFixed(1)} damage${p1Result.isCritical ? ' (Critical)' : ''}!</p>`;
+      } else {
+        battleLog.innerHTML += `<p>${gameState.player1.name} did not attack.</p>`;
+      }
+      if (p2Move) {
+        battleLog.innerHTML += `<p>${gameState.player2.name} uses ${p2Move} for ${p2Result.power.toFixed(1)} damage${p2Result.isCritical ? ' (Critical)' : ''}!</p>`;
+      } else {
+        battleLog.innerHTML += `<p>${gameState.player2.name} did not attack.</p>`;
+      }
 
       updateHPBars();
 
@@ -963,11 +944,9 @@
 
       // Increment Turn
       gameState.currentTurn++;
-      startTurnTimer();
 
       // Check for Game Over
       if (gameState.player1.hp <= 0 || gameState.player2.hp <= 0) {
-        clearInterval(turnTimerInterval);
         const winner = gameState.player1.hp > 0 ? gameState.player1 : gameState.player2;
         document.getElementById('battleScreen').classList.add('hidden');
         document.getElementById('winnerScreen').classList.remove('hidden');
