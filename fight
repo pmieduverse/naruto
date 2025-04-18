@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Battle Arena: Metallic Duel Enhanced</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Orbitron:wght@400;700&family=Audiowide&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; overflow: hidden; background: #1a1a1a; font-family: 'Orbitron', sans-serif; }
+    #gameCanvas { width: 100vw; height: 100vh; position: absolute; z-index: 0; }
+    .particle-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+    .glow { animation: glow 1.5s ease-in-out infinite alternate; }
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #fff, 0 0 10px #00ffff; }
+      to { text-shadow: 0 0 10px #fff, 0 0 20px #00ffff; }
+    }
+    .holo-window {
+      background: rgba(10, 10, 40, 0.95);
+      border: 3px solid #ffd700;
+      border-radius: 20px;
+      box-shadow: 0 0 50px rgba(255, 215, 0, 0.9), inset 0 0 20px rgba(255, 45, 0, 0.5);
+      backdrop-filter: blur(10px);
+      animation: holoPulse 5s infinite alternate;
+    }
+    @keyframes holoPulse {
+      0% { box-shadow: 0 0 50px rgba(255, 215, 0, 0.9), inset 0 0 20px rgba(255, 45, 0, 0.5); }
+      100% { box-shadow: 0 0 70px rgba(255, 45, 0, 0.9), inset 0 0 30px rgba(255, 215, 0, 0.7); }
+    }
+    .player-card {
+      perspective: 1500px;
+      width: 300px;
+      height: 400px;
+      transition: transform 0.5s;
+      background: linear-gradient(135deg, #ffd700, #ff4500, #1e90ff, #8a2be2);
+      background-size: 400% 400%;
+      animation: cosmicFlow 20s ease infinite;
+      border-radius: 20px;
+      border: 3px solid #ffd700;
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+      position: relative;
+      overflow: hidden;
+      z-index: 2;
+    }
+    .player-card:hover { transform: rotateY(10deg); }
+    @keyframes cosmicFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .card-content {
+      padding: 20px;
+      color: #fff;
+      text-align: center;
+      text-shadow: 0 0 5px #ff4500;
+    }
+    .card-content h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8em;
+      color: #ffd700;
+      text-shadow: 0 0 10px #ffd700;
+    }
+    .avatar-img {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px #ffd700;
+      margin: 10px auto;
+    }
+    .hp-bar {
+      width: 80%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 5px;
+      overflow: hidden;
+      margin: 10px auto;
+      box-shadow: 0 0 10px #ffd700;
+    }
+    .hp-bar div {
+      height: 100%;
+      background: linear-gradient(90deg, #ff4500, #ffd700);
+      transition: width 0.5s ease;
+    }
+    .digital-hp {
+      font-family: 'Audiowide', sans-serif;
+      font-size: 1em;
+      text-shadow: 0 0 5px #00ffff;
+    }
+    .power-meter {
+      font-size: 0.9em;
+      margin-top: 10px;
+      color: #1e90ff;
+      text-shadow: 0 0 5px #1e90ff;
+    }
+    .combo-meter {
+      font-size: 0.8em;
+      color: #ff4500;
+      text-shadow: 0 0 5px #ff4500;
+      margin-top: 5px;
+    }
+    .synergy-visualizer {
+      font-size: 0.8em;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid #ffd700;
+      border-radius: 10px;
+      margin-top: 10px;
+      color: #ffd700;
+      text-shadow: 0 0 8px #ffd700;
+      position: relative;
+    }
+    .synergy-pulse {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255,215,0,0.5), transparent);
+      transform: translate(-50%, -50%);
+      animation: synergyPulse 2s infinite;
+      opacity: 0;
+    }
+    @keyframes synergyPulse {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+      50% { opacity: 0.5; }
+      100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+    }
+    .panel {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(10, 10, 40, 0.95);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+      max-width: 350px;
+      width: 90%;
+      display: none;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+    .panel.active { display: block; }
+    .summoning-spinner {
+      width: 100%;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+    .spinner-slot {
+      width: 80px;
+      height: 80px;
+      background-size: cover;
+      border-radius: 10ikers
+      animation: spinAnimation 0.1s linear infinite;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    }
+    @keyframes spinAnimation {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-80px); }
+    }
+    .summoned-animal img {
+      width: 100%;
+      max-width: 100px;
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+    .rarity-legendary {
+      border: 3px solid #ffd700;
+      box-shadow: 0 0 30px #ffd700;
+      animation: glowLegendary 1.5s infinite alternate;
+    }
+    .rarity-mythic {
+      border: 3px solid #8a2be2;
+      box-shadow: 0 0 30px #8a2be2;
+      animation: glowMythic 1.5s infinite alternate;
+    }
+    .rarity-epic {
+      border: 3px solid #1e90ff;
+      box-shadow: 0 0 30px #1e90ff;
+      animation: glowEpic 1.5s infinite alternate;
+    }
+    @keyframes glowLegendary {
+      0% { box-shadow: 0 0 20px #ffd700; }
+      100% { box-shadow: 0 0 40px #ffd700; }
+    }
+    @keyframes glowMythic {
+      0% { box-shadow: 0 0 20px #8a2be2; }
+      100% { box-shadow: 0 0 40px #8a2be2; }
+    }
+    @keyframes glowEpic {
+      0% { box-shadow: 0 0 20px #1e90ff; }
+      100% { box-shadow: 0 0 40px #1e90ff; }
+    }
+    .turn-timer {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 10, 40, 0.95);
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: 2px solid #ffd700;
+      color: #ffd700;
+      font-family: 'Audiowide', sans-serif;
+      text-shadow: 0 0 5px #ffd700;
+    }
+    .move-preview {
+      position: absolute;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 10, 40, 0.95);
+      padding: 10px;
+      border-radius: 10px;
+      border: 2px solid #1e90ff;
+      color: #1e90ff;
+      font-size: 0.9em;
+      max-width: 400px;
+      text-align: center;
+      display: none;
+    }
+    .move-preview.active { display: block; }
+    .critical-hit {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #ff0000;
+      font-size: 2em;
+      font-family: 'Audiowide', sans-serif;
+      text-shadow: 0 0 10px #ff0000;
+      animation: criticalHit 1s ease-out forwards;
+      z-index: 100;
+    }
+    @keyframes criticalHit {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+    }
+    .hazard {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background: radial-gradient(circle, rgba(255,0,0,0.8), transparent);
+      border-radius: 50%;
+      animation: hazardPulse 2s infinite;
+    }
+    @keyframes hazardPulse {
+      0% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.5); opacity: 0.4; }
+      100% { transform: scale(1); opacity: 0.8; }
+    }
+    @media (max-width: 768px) {
+      .player-card { width: 250px; height: 350px; }
+      .card-content h2 { font-size: 1.5em; }
+      .avatar-img { width: 80px; height: 80px; }
+      .turn-timer { font-size: 0.8em; padding: 8px 16px; }
+      .move-preview { max-width: 300px; font-size: 0.8em; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particleCanvas" class="particle-canvas"></canvas>
+
+  <!-- Intro Screen -->
+  <div id="introScreen" class="absolute inset-0 flex items-center justify-center bg-black z-10">
+    <h1 class="text-6xl font-bold text-white glow">Battle Arena Enhanced</h1>
+  </div>
+
+  <!-- Start Screen -->
+  <div id="startScreen" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-75 text-white z-10">
+    <h1 class="text-4xl font-bold mb-4 font-Cinzel">Battle Arena</h1>
+    <div class="flex space-x-4">
+      <div>
+        <input id="player1Name" type="text" placeholder="Player 1 Name" class="p-2 rounded bg-gray-800 text-white">
+        <select id="player1Rank" class="p-2 rounded bg-gray-800 text-white mt-2">
+          <option value="Z">Rank Z (+20)</option>
+          <option value="X">Rank X (+15)</option>
+          <option value="S">Rank S (+10)</option>
+          <option value="A">Rank A (+5)</option>
+          <option value="B">Rank B (+4)</option>
+          <option value="C">Rank C (+3)</option>
+          <option value="D">Rank D (+2)</option>
+          <option value="E">Rank E (+1)</option>
+        </select>
+      </div>
+      <div>
+        <input id="player2Name" type="text" placeholder="Player 2 Name" class="p-2 rounded bg-gray-800 text-white">
+        <select id="player2Rank" class="p-2 rounded bg-gray-800 text-white mt-2">
+          <option value="Z">Rank Z (+20)</option>
+          <option value="X">Rank X (+15)</option>
+          <option value="S">Rank S (+10)</option>
+          <option value="A">Rank A (+5)</option>
+          <option value="B">Rank B (+4)</option>
+          <option value="C">Rank C (+3)</option>
+          <option value="D">Rank D (+2)</option>
+          <option value="E">Rank E (+1)</option>
+        </select>
+      </div>
+    </div>
+    <button id="startGame" class="mt-4 px-4 py-2 bg-blue-600 rounded hover:bg-blue-700 font-Audiowide">Start Battle</button>
+  </div>
+
+  <!-- Battle Screen -->
+  <div id="battleScreen" class="hidden absolute inset-0 text-white z-10">
+    <div class="turn-timer" id="turnTimer">Turn Time: 30s</div>
+    <div class="move-preview" id="movePreview"></div>
+    <div class="flex justify-between p-4">
+      <div id="player1Card" class="player-card">
+        <div class="card-content">
+          <h2 id="player1CardName"></h2>
+          <div id="player1Avatar" class="avatar-img" style="background: url('https://img.freepik.com/free-vector/hand-drawn-zoom-effect-background_23-2149703171.jpg?t=st=1744961870~exp=1744965470~hmac=d65d4f334e0222bc65a2468fafad3857c95ba644c330101043017010c4d3476f&w=1380') center/cover;"></div>
+          <div class="digital-hp">HP: <span id="player1HPPercent">100%</span></div>
+          <div class="hp-bar"><div id="player1HP"></div></div>
+          <div class="power-meter">Power: <span id="player1Power">0</span></div>
+          <div class="combo-meter">Combo: <span id="player1Combo">0</span></div>
+          <div id="player1Synergy" class="synergy-visualizer"><div class="synergy-pulse"></div></div>
+        </div>
+      </div>
+      <div id="player2Card" class="player-card">
+        <div class="card-content">
+          <h2 id="player2CardName"></h2>
+          <div id="player2Avatar" class="avatar-img" style="background: url('https://img.freepik.com/free-vector/gradient-zoom-effect-background_23-2149737565.jpg?t=st=1744962037~exp=1744965637~hmac=06450a03baf638bb96f1f159cc7fcc61cf4b597f26ed9e9dc5b7940c1310b2a9&w=1380') center/cover;"></div>
+          <div class="digital-hp">HP: <span id="player2HPPercent">100%</span></div>
+          <div class="hp-bar"><div id="player2HP"></div></div>
+          <div class="power-meter">Power: <span id="player2Power">0</span></div>
+          <div class="combo-meter">Combo: <span id="player2Combo">0</span></div>
+          <div id="player2Synergy" class="synergy-visualizer"><div class="synergy-pulse"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <input id="player1MoveInput" type="text" placeholder="Player 1 Move" class="p-2 rounded bg-gray-800 text-white">
+        <button id="player1CancelMove" class="px-2 py-1 bg-red-600 rounded hover:bg-red-700 font-Audiowide">Cancel</button>
+      </div>
+      <div class="flex items-center space-x-2">
+        <input id="player2MoveInput" type="text" placeholder="Player 2 Move" class="p-2 rounded bg-gray-800 text-white">
+        <button id="player2CancelMove" class="px-2 py-1 bg-red-600 rounded hover:bg-red-700 font-Audiowide">Cancel</button>
+      </div>
+      <div class="flex space-x-2">
+        <button id="executeMove" class="px-4 py-2 bg-green-600 rounded hover:bg-green-700 font-Audiowide">Execute Move</button>
+        <button id="interactEnvironment" class="px-4 py-2 bg-purple-600 rounded hover:bg-purple-700 font-Audiowide">Interact</button>
+      </div>
+    </div>
+    <div id="battleLog" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-75 p-4 rounded text-center"></div>
+  </div>
+
+  <!-- Winner Screen -->
+  <div id="winnerScreen" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-75 text-white z-10">
+    <h1 id="winnerText" class="text-4xl font-bold mb-4 font-Cinzel"></h1>
+    <div id="winnerCard" class="player-card w-96 h-[500px]">
+      <div class="card-content">
+        <h2 id="winnerCardName"></h2>
+        <div id="winnerAvatar" class="avatar-img w-32 h-32"></div>
+        <div class="digital-hp">HP: <span id="winnerHPPercent"></span></div>
+        <div class="hp-bar"><div id="winnerHP"></div></div>
+        <div id="winnerLastMove" class="power-meter"></div>
+        <div id="winnerCombo" class="combo-meter"></div>
+        <div id="winnerSynergy" class="synergy-visualizer"><div class="synergy-pulse"></div></div>
+        <div id="winnerSummon" class="synergy-visualizer"></div>
+      </div>
+    </div>
+  </div>
+
+  <canvas id="gameCanvas"></canvas>
+
+  <!-- Audio Elements -->
+  <audio id="attackSound" src="attack.mp3"></audio>
+  <audio id="victorySound" src="victory.mp3"></audio>
+  <audio id="hazardSound" src="hazard.mp3"></audio>
+  <audio id="interactSound" src="interact.mp3"></audio>
+
+  <script>
+    // Three.js Setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('gameCanvas') });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // Background Image
+    const textureLoader = new THREE.TextureLoader();
+    const backgroundTexture = textureLoader.load('https://img.freepik.com/free-photo/digital-art-style-illustration-thunderstorm_23-2151812767.jpg?t=st=1744961679~exp=1744965279~hmac=42bcc44467f63263edbdbc3cf8c25ca1dc37eabf63a615d388cf150461306c38&w=1380');
+    const backgroundGeometry = new THREE.SphereGeometry(50, 32, 32);
+    const backgroundMaterial = new THREE.MeshBasicMaterial({ map: backgroundTexture, side: THREE.BackSide });
+    const backgroundSphere = new THREE.Mesh(backgroundGeometry, backgroundMaterial);
+    scene.add(backgroundSphere);
+
+    // Metallic Arena
+    const arenaGeometry = new THREE.BoxGeometry(10, 0.2, 10);
+    const arenaMaterial = new THREE.MeshStandardMaterial({ color: 0x444444, metalness: 0.9, roughness: 0.2 });
+    const arena = new THREE.Mesh(arenaGeometry, arenaMaterial);
+    scene.add(arena);
+
+    // Environmental Objects
+    const envObjects = [];
+    function createEnvironmentalObject() {
+      const geometry = new THREE.CylinderGeometry(0.5, 0.5, 2, 32);
+      const material = new THREE.MeshStandardMaterial({ color: 0x00ff00, metalness: 0.8, roughness: 0.3 });
+      const obj = new THREE.Mesh(geometry, material);
+      obj.position.set(
+        (Math.random() - 0.5) * 8,
+        1,
+        (Math.random() - 0.5) * 8
+      );
+      scene.add(obj);
+      envObjects.push(obj);
+    }
+    for (let i = 0; i < 3; i++) createEnvironmentalObject();
+
+    // Battlefield Hazards
+    const hazards = [];
+    function createHazard() {
+      const hazardDiv = document.createElement('div');
+      hazardDiv.className = 'hazard';
+      hazardDiv.style.left = `${Math.random() * window.innerWidth}px`;
+      hazardDiv.style.top = `${Math.random() * window.innerHeight}px`;
+      document.body.appendChild(hazardDiv);
+      hazards.push(hazardDiv);
+      setTimeout(() => {
+        hazardDiv.remove();
+        hazards.splice(hazards.indexOf(hazardDiv), 1);
+      }, 5000);
+      document.getElementById('hazardSound').play();
+    }
+    setInterval(createHazard, 10000);
+
+    // Lighting
+    const ambientLight = new THREE.AmbientLight(0x404040);
+    scene.add(ambientLight);
+    const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+    pointLight.position.set(5, 5, 5);
+    scene.add(pointLight);
+
+    // Camera Position
+    camera.position.z = 5;
+    camera.position.y = 2;
+
+    // Animation Loop
+    function animate() {
+      requestAnimationFrame(animate);
+      envObjects.forEach(obj => {
+        obj.rotation.y += 0.01;
+      });
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Particle Effects
+    const particleCanvas = document.getElementById("particleCanvas");
+    const ctx = particleCanvas.getContext("2d");
+    particleCanvas.width = window.innerWidth;
+    particleCanvas.height = window.innerHeight;
+
+    let particles = [];
+    class Particle {
+      constructor() {
+        this.x = Math.random() * particleCanvas.width;
+        this.y = Math.random() * particleCanvas.height;
+        this.size = Math.random() * 4 + 1;
+        this.speedX = Math.random() * 1.5 - 0.75;
+        this.speedY = Math.random() * 1.5 - 0.75;
+        this.color = `hsl(${Math.random() * 60 + 180}, 70%, 80%)`;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.size > 0.2) this.size -= 0.015;
+        if (this.x < 0 || this.x > particleCanvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > particleCanvas.height) this.speedY *= -1;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function handleParticles() {
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+        if (particles[i].size <= 0.2) {
+          particles.splice(i, 1);
+          i--;
+        }
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+      if (Math.random() < 0.15) particles.push(new Particle());
+      handleParticles();
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    window.addEventListener('resize', () => {
+      particleCanvas.width = window.innerWidth;
+      particleCanvas.height = window.innerHeight;
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
+
+    // Game State
+    let gameState = {
+      player1: { name: '', rank: '', hp: 100, summonedAnimal: null, lastMove: '', lastPower: 0, combo: 0, lastMoveType: '' },
+      player2: { name: '', rank: '', hp: 100, summonedAnimal: null, lastMove: '', lastPower: 0, combo: 0, lastMoveType: '' },
+      currentTurn: 0,
+      turnTime: 30,
+      hazardsActive: false,
+    };
+    let savedCards = JSON.parse(localStorage.getItem('destinyVault')) || [];
+
+    // Rank Power Points
+    const rankPoints = {
+      Z: 20,
+      X: 15,
+      S: 10,
+      A: 5,
+      B: 4,
+      C: 3,
+      D: 2,
+      E: 1,
+    };
+
+    // Rank Wallpapers
+    const rankWallpapers = {
+      Z: "https://img.freepik.com/free-vector/realistic-luxury-background_23-2149338707.jpg",
+      X: "https://img.freepik.com/free-vector/realistic-thunderstorm-effects-with-bright-red-orange-flashes-lightnings-night-sky_1284-33524.jpg",
+      S: "https://img.freepik.com/free-photo/full-shot-ninja-wearing-equipment_23-2150960902.jpg",
+      A: "https://img.freepik.com/free-photo/challenger-stands-front-spooky-castle-illustration_456031-14.jpg",
+      B: "https://img.freepik.com/free-photo/green-neon-light-stars-background_1017-2770.jpg",
+      C: "https://img.freepik.com/free-photo/blue-space-wallpaper_1017-3761.jpg",
+      D: "https://img.freepik.com/free-vector/vector-banner-illustration-lightning-thunder-abstract-blue-background-with-neon-sparkles-light_528282-302.jpg",
+      E: "https://img.freepik.com/free-photo/fantasy-scene-anime-style_23-2151135281.jpg",
+    };
+
+    // Power Database (50 Powers)
+    const powers = [
+      { name: 'Inferno Blaze', basePower: 30, category: 'Elemental' },
+      { name: 'Glacial Frost', basePower: 28, category: 'Elemental' },
+      { name: 'Thunderstrike', basePower: 32, category: 'Elemental' },
+      { name: 'Tidal Surge', basePower: 25, category: 'Elemental' },
+      { name: 'Earthquake Smash', basePower: 30, category: 'Elemental' },
+      { name: 'Tempest Wind', basePower: 27, category: 'Elemental' },
+      { name: 'Solar Flare', basePower: 35, category: 'Elemental' },
+      { name: 'Shadow Veil', basePower: 22, category: 'Elemental' },
+      { name: 'Lunar Beam', basePower: 28, category: 'Elemental' },
+      { name: 'Magma Burst', basePower: 33, category: 'Elemental' },
+      { name: 'Dragon Roar', basePower: 40, category: 'Mystical' },
+      { name: 'Phoenix Rebirth', basePower: 25, category: 'Mystical' },
+      { name: 'Void Rift', basePower: 38, category: 'Mystical' },
+      { name: 'Astral Projection', basePower: 20, category: 'Mystical' },
+      { name: 'Celestial Strike', basePower: 35, category: 'Mystical' },
+      { name: 'Necrotic Touch', basePower: 30, category: 'Mystical' },
+      { name: 'Spirit Bind', basePower: 22, category: 'Mystical' },
+      { name: 'Chaos Weaver', basePower: 40, category: 'Mystical' },
+      { name: 'Ethereal Shield', basePower: 15, category: 'Mystical' },
+      { name: 'Divine Wrath', basePower: 37, category: 'Mystical' },
+      { name: 'Meteor Crash', basePower: 35, category: 'Physical' },
+      { name: 'Iron Fist', basePower: 25, category: 'Physical' },
+      { name: 'Blade Storm', basePower: 30, category: 'Physical' },
+      { name: 'Savage Claw', basePower: 28, category: 'Physical' },
+      { name: 'Hammer Smash', basePower: 32, category: 'Physical' },
+      { name: 'Sonic Kick', basePower: 22, category: 'Physical' },
+      { name: 'Titan Slam', basePower: 38, category: 'Physical' },
+      { name: 'Arrow Barrage', basePower: 20, category: 'Physical' },
+      { name: 'Whirlwind Spin', basePower: 25, category: 'Physical' },
+      { name: 'Berserker Rage', basePower: 35, category: 'Physical' },
+      { name: 'Laser Cannon', basePower: 30, category: 'Technological' },
+      { name: 'Nano Swarm', basePower: 25, category: 'Technological' },
+      { name: 'EMP Blast', basePower: 20, category: 'Technological' },
+      { name: 'Quantum Pulse', basePower: 35, category: 'Technological' },
+      { name: 'Plasma Grenade', basePower: 28, category: 'Technological' },
+      { name: 'Hologram Decoy', basePower: 15, category: 'Technological' },
+      { name: 'Rocket Barrage', basePower: 32, category: 'Technological' },
+      { name: 'Gravity Field', basePower: 22, category: 'Technological' },
+      { name: 'Cyber Hack', basePower: 20, category: 'Technological' },
+      { name: 'Fusion Core', basePower: 40, category: 'Technological' },
+      { name: 'Time Warp', basePower: 35, category: 'Special' },
+      { name: 'Mind Crush', basePower: 25, category: 'Special' },
+      { name: 'Blood Reaper', basePower: 30, category: 'Special' },
+      { name: 'Storm Archer', basePower: 28, category: 'Special' },
+      { name: 'Eternal Samurai', basePower: 32, category: 'Special' },
+      { name: 'Illusive Titan', basePower: 22, category: 'Special' },
+      { name: 'Toast Mage', basePower: 20, category: 'Special' },
+      { name: 'Cosmic Nova', basePower: 40, category: 'Special' },
+      { name: 'Soul Forge', basePower: 25, category: 'Special' },
+      { name: 'Doom Vortex', basePower: 38, category: 'Special' },
+    ];
+
+    // Keywords for Custom Moves (50 Types)
+    const keywords = {
+      High: [
+        'Cosmic', 'Void', 'Dragon', 'Eternal', 'Chaos', 'Astral', 'Celestial', 'Divine', 'Abyssal', 'Nova',
+        'Eclipse', 'Nebula', 'Quantum', 'Infinity', 'Oblivion', 'Phantom', 'Radiant', 'Sovereign', 'Apocalypse', 'Genesis'
+      ],
+      Medium: [
+        'Fire', 'Ice', 'Thunder', 'Shadow', 'Light', 'Blaze', 'Frost', 'Storm', 'Wind', 'Tide',
+        'Magma', 'Lunar', 'Solar', 'Earth', 'Spirit', 'Plasma', 'Gravity', 'Pulse', 'Holo', 'Nano'
+      ],
+      Low: [
+        'Punch', 'Kick', 'Slash', 'Wave', 'Burst', 'Strike', 'Smash', 'Claw', 'Arrow', 'Spin'
+      ]
+    };
+
+    // Turn Timer
+    let turnTimerInterval;
+    function startTurnTimer() {
+      gameState.turnTime = 30;
+      document.getElementById('turnTimer').textContent = `Turn Time: ${gameState.turnTime}s`;
+      clearInterval(turnTimerInterval);
+      turnTimerInterval = setInterval(() => {
+        gameState.turnTime--;
+        document.getElementById('turnTimer').textContent = `Turn Time: ${gameState.turnTime}s`;
+        if (gameState.turnTime <= 0) {
+          clearInterval(turnTimerInterval);
+          // Auto-execute with default moves if time runs out
+          document.getElementById('player1MoveInput').value = document.getElementById('player1MoveInput').value || 'Default Move';
+          document.getElementById('player2MoveInput').value = document.getElementById('player2MoveInput').value || 'Default Move';
+          document.getElementById('executeMove').click();
+        }
+      }, 1000);
+    }
+
+    // Health Regeneration
+    function regenerateHealth() {
+      gameState.player1.hp = Math.min(100, gameState.player1.hp + 2);
+      gameState.player2.hp = Math.min(100, gameState.player2.hp + 2);
+      updateHPBars();
+    }
+    setInterval(regenerateHealth, 5000);
+
+    // Move Power Calculation
+    function calculateMovePower(moveName, playerRank, playerCombo) {
+      const foundPower = powers.find(power => power.name.toLowerCase() === moveName.toLowerCase());
+      let basePower = 0;
+      let category = '';
+      if (foundPower) {
+        basePower = foundPower.basePower;
+        category = foundPower.category;
+      } else {
+        basePower = Math.min(moveName.length * 2, 20);
+        keywords.High.forEach(keyword => {
+          if (moveName.toLowerCase().includes(keyword.toLowerCase())) basePower += 10;
+        });
+        keywords.Medium.forEach(keyword => {
+          if (moveName.toLowerCase().includes(keyword.toLowerCase())) basePower += 5;
+        });
+        keywords.Low.forEach(keyword => {
+          if (moveName.toLowerCase().includes(keyword.toLowerCase())) basePower += 2;
+        });
+        category = 'Custom';
+      }
+
+      const randomFactor = Math.random() * 10 - 5;
+      const rankBonus = rankPoints[playerRank] || 0;
+      const comboBonus = playerCombo * 2;
+      const criticalHit = Math.random() < 0.1 ? 1.5 : 1; // 10% chance for critical hit
+      const totalPower = (basePower + randomFactor + rankBonus + comboBonus) * criticalHit;
+      
+      return { power: totalPower, category, isCritical: criticalHit > 1 };
+    }
+
+    // Calculate Synergy
+    function calculateSynergy(rank, moveName, combo) {
+      let synergy = "No Synergy";
+      let bonus = 0;
+      if (['Z', 'X', 'S'].includes(rank)) {
+        bonus = rankPoints[rank];
+        synergy = `High Rank Synergy: +${bonus}% Damage!`;
+      } else if (moveName.toLowerCase().includes('cosmic') && rank === 'Z') {
+        bonus = 20;
+        synergy = "Cosmic Synergy: +20% Power!";
+      } else if (moveName.toLowerCase().includes('fire') && ['S', 'A'].includes(rank)) {
+        bonus = 10;
+        synergy = "Fire Synergy: +10% Damage!";
+      }
+      if (combo >= 3) {
+        bonus += 15;
+        synergy += " Combo Synergy: +15% Power!";
+      }
+      return { text: synergy, bonus };
+    }
+
+    // Update Combo Meter
+    function updateCombo(player, moveCategory) {
+      if (player.lastMoveType === moveCategory && moveCategory !== '') {
+        player.combo = Math.min(player.combo + 1, 5); // Max combo 5
+      } else {
+        player.combo = 1;
+      }
+      player.lastMoveType = moveCategory;
+      return player.combo;
+    }
+
+    // Power-Specific Animations
+    function playAttackAnimation(moveName, cardElement, isCritical) {
+      let particleColor = 0xff0000;
+      let particleCount = 50;
+      const move = powers.find(power => power.name.toLowerCase() === moveName.toLowerCase());
+
+      if (move) {
+        switch (move.category) {
+          case 'Elemental':
+            particleColor = move.name.includes('Fire') || move.name.includes('Blaze') ? 0xff4500 : 
+                           move.name.includes('Ice') || move.name.includes('Frost') ? 0x00b7eb :
+                           move.name.includes('Thunder') ? 0xffff00 : 0x00ff00;
+            particleCount = 100;
+            break;
+          case 'Mystical':
+            particleColor = 0x800080;
+            particleCount = 80;
+            break;
+          case 'Physical':
+            particleColor = 0x808080;
+            particleCount = 60;
+            break;
+          case 'Technological':
+            particleColor = 0x00ffff;
+            particleCount = 120;
+            break;
+          case 'Special':
+            particleColor = 0xff00ff;
+            particleCount = 150;
+            break;
+        }
+      }
+
+      const particleGeometry = new THREE.SphereGeometry(0.1, 16, 16);
+      const particleMaterial = new THREE.MeshBasicMaterial({ color: particleColor });
+      for (let i = 0; i < particleCount; i++) {
+        const particle = new THREE.Mesh(particleGeometry, particleMaterial);
+        particle.position.set(
+          Math.random() * 2 - 1,
+          Math.random() * 2 - 1,
+          Math.random() * 2 - 1
+        );
+        scene.add(particle);
+        setTimeout(() => scene.remove(particle), 1000);
+      }
+
+      cardElement.style.animation = 'shake 0.5s';
+      cardElement.style.borderColor = isCritical ? '#ff0000' : '#ff4500';
+      setTimeout(() => {
+        cardElement.style.animation = '';
+        cardElement.style.borderColor = '#ffd700';
+      }, 500);
+
+      if (isCritical) {
+        const critDiv = document.createElement('div');
+        critDiv.className = 'critical-hit';
+        critDiv.textContent = 'CRITICAL HIT!';
+        document.body.appendChild(critDiv);
+        setTimeout(() => critDiv.remove(), 1000);
+      }
+
+      document.getElementById('attackSound').play();
+    }
+
+    // Environmental Interaction
+    function interactEnvironment(player) {
+      if (envObjects.length > 0 && Math.random() < 0.5) {
+        const obj = envObjects.pop();
+        scene.remove(obj);
+        const boost = 10;
+        const otherPlayer = player === gameState.player1 ? gameState.player2 : gameState.player1;
+        otherPlayer.hp = Math.max(0, otherPlayer.hp - boost);
+        document.getElementById('battleLog').innerHTML += `<p>${player.name} interacts with environment, dealing ${boost} damage!</p>`;
+        updateHPBars();
+        document.getElementById('interactSound').play();
+        createEnvironmentalObject(); // Respawn new object
+      } else {
+        document.getElementById('battleLog').innerHTML += `<p>${player.name} failed to interact with environment!</p>`;
+      }
+    }
+
+    // Winner Character Showcase
+    function showWinnerCharacter(winnerName, winnerCard) {
+      const geometry = new THREE.BoxGeometry(1, 2, 1);
+      const material = new THREE.MeshStandardMaterial({ color: 0x00ffff, metalness: 0.9, roughness: 0.2 });
+      const character = new THREE.Mesh(geometry, material);
+      character.position.y = 1;
+      scene.add(character);
+
+      let angle = 0;
+      function rotateCamera() {
+        angle += 0.01;
+        camera.position.x = Math.sin(angle) * 5;
+        camera.position.z = Math.cos(angle) * 5;
+        camera.lookAt(character.position);
+        if (angle < Math.PI * 2) requestAnimationFrame(rotateCamera);
+      }
+      rotateCamera();
+
+      const auraGeometry = new THREE.SphereGeometry(1.5, 32, 32);
+      const auraMaterial = new THREE.MeshBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.3 });
+      const aura = new THREE.Mesh(auraGeometry, auraMaterial);
+      aura.position.y = 1;
+      scene.add(aura);
+
+      document.getElementById('victorySound').play();
+    }
+
+    // Move Preview
+    function showMovePreview(playerNum, move) {
+      const preview = document.getElementById('movePreview');
+      if (move) {
+        const power = calculateMovePower(move, gameState[`player${playerNum}`].rank, gameState[`player${playerNum}`].combo);
+        preview.textContent = `Player ${playerNum} Preview: ${move} (${power.power.toFixed(1)} Power)`;
+        preview.classList.add('active');
+      } else {
+        preview.classList.remove('active');
+      }
+    }
+
+    // Update UI
+    function updateHPBars() {
+      const p1Percent = Math.round(gameState.player1.hp);
+      const p2Percent = Math.round(gameState.player2.hp);
+      document.getElementById('player1HP').style.width = `${p1Percent}%`;
+      document.getElementById('player2HP').style.width = `${p2Percent}%`;
+      document.getElementById('player1HPPercent').textContent = `${p1Percent}%`;
+      document.getElementById('player2HPPercent').textContent = `${p2Percent}%`;
+      document.getElementById('player1Combo').textContent = gameState.player1.combo;
+      document.getElementById('player2Combo').textContent = gameState.player2.combo;
+    }
+
+    // Intro Animation
+    setTimeout(() => {
+      document.getElementById('introScreen').classList.add('hidden');
+      document.getElementById('startScreen').classList.remove('hidden');
+    }, 3000);
+
+    // UI Event Listeners
+    document.getElementById('startGame').addEventListener('click', () => {
+      gameState.player1.name = document.getElementById('player1Name').value || 'Player 1';
+      gameState.player2.name = document.getElementById('player2Name').value || 'Player 2';
+      gameState.player1.rank = document.getElementById('player1Rank').value;
+      gameState.player2.rank = document.getElementById('player2Rank').value;
+
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('battleScreen').classList.remove('hidden');
+
+      document.getElementById('player1CardName').textContent = `${gameState.player1.name} (${gameState.player1.rank})`;
+      document.getElementById('player2CardName').textContent = `${gameState.player2.name} (${gameState.player2.rank})`;
+      document.getElementById('player1Card').style.backgroundImage = `url('${rankWallpapers[gameState.player1.rank]}')`;
+      document.getElementById('player2Card').style.backgroundImage = `url('${rankWallpapers[gameState.player2.rank]}')`;
+      updateHPBars();
+      startTurnTimer();
+    });
+
+    document.getElementById('player1MoveInput').addEventListener('input', () => {
+      const move = document.getElementById('player1MoveInput').value;
+      showMovePreview(1, move);
+      if (move) {
+        const { power } = calculateMovePower(move, gameState.player1.rank, gameState.player1.combo);
+        document.getElementById('player1Power').textContent = power.toFixed(1);
+        const synergy = calculateSynergy(gameState.player1.rank, move, gameState.player1.combo);
+        document.getElementById('player1Synergy').textContent = `Synergy: ${synergy.text}`;
+      } else {
+        document.getElementById('player1Power').textContent = '0';
+        document.getElementById('player1Synergy').textContent = '';
+      }
+    });
+
+    document.getElementById('player2MoveInput').addEventListener('input', () => {
+      const move = document.getElementById('player2MoveInput').value;
+      showMovePreview(2, move);
+      if (move) {
+        const { power } = calculateMovePower(move, gameState.player2.rank, gameState.player2.combo);
+        document.getElementById('player2Power').textContent = power.toFixed(1);
+        const synergy = calculateSynergy(gameState.player2.rank, move, gameState.player2.combo);
+        document.getElementById('player2Synergy').textContent = `Synergy: ${synergy.text}`;
+      } else {
+        document.getElementById('player2Power').textContent = '0';
+        document.getElementById('player2Synergy').textContent = '';
+      }
+    });
+
+    document.getElementById('player1CancelMove').addEventListener('click', () => {
+      document.getElementById('player1MoveInput').value = '';
+      document.getElementById('player1Power').textContent = '0';
+      document.getElementById('player1Synergy').textContent = '';
+      showMovePreview(1, '');
+    });
+
+    document.getElementById('player2CancelMove').addEventListener('click', () => {
+      document.getElementById('player2MoveInput').value = '';
+      document.getElementById('player2Power').textContent = '0';
+      document.getElementById('player2Synergy').textContent = '';
+      showMovePreview(2, '');
+    });
+
+    document.getElementById('interactEnvironment').addEventListener('click', () => {
+      const activePlayer = gameState.currentTurn % 2 === 0 ? gameState.player1 : gameState.player2;
+      interactEnvironment(activePlayer);
+    });
+
+    document.getElementById('executeMove').addEventListener('click', () => {
+      const p1Move = document.getElementById('player1MoveInput').value || 'Default Move';
+      const p2Move = document.getElementById('player2MoveInput').value || 'Default Move';
+
+      const p1Result = calculateMovePower(p1Move, gameState.player1.rank, gameState.player1.combo);
+      const p2Result = calculateMovePower(p2Move, gameState.player2.rank, gameState.player2.combo);
+
+      gameState.player1.lastMove = p1Move;
+      gameState.player1.lastPower = p1Result.power;
+      gameState.player2.lastMove = p2Move;
+      gameState.player2.lastPower = p2Result.power;
+
+      gameState.player1.combo = updateCombo(gameState.player1, p1Result.category);
+      gameState.player2.combo = updateCombo(gameState.player2, p2Result.category);
+
+      gameState.player2.hp = Math.max(0, gameState.player2.hp - p1Result.power);
+      gameState.player1.hp = Math.max(0, gameState.player1.hp - p2Result.power);
+
+      // Check for hazard damage
+      hazards.forEach(hazard => {
+        const rect = hazard.getBoundingClientRect();
+        const p1CardRect = document.getElementById('player1Card').getBoundingClientRect();
+        const p2CardRect = document.getElementById('player2Card').getBoundingClientRect();
+        if (rect.left < p1CardRect.right && rect.right > p1CardRect.left &&
+            rect.top < p1CardRect.bottom && rect.bottom > p1CardRect.top) {
+          gameState.player1.hp = Math.max(0, gameState.player1.hp - 5);
+          document.getElementById('battleLog').innerHTML += `<p>${gameState.player1.name} hit by hazard for 5 damage!</p>`;
+        }
+        if (rect.left < p2CardRect.right && rect.right > p2CardRect.left &&
+            rect.top < p2CardRect.bottom && rect.bottom > p2CardRect.top) {
+          gameState.player2.hp = Math.max(0, gameState.player2.hp - 5);
+          document.getElementById('battleLog').innerHTML += `<p>${gameState.player2.name} hit by hazard for 5 damage!</p>`;
+        }
+      });
+
+      // Update Battle Log
+      const battleLog = document.getElementById('battleLog');
+      battleLog.innerHTML = `
+        <p>${gameState.player1.name} uses ${p1Move} for ${p1Result.power.toFixed(1)} damage${p1Result.isCritical ? ' (Critical)' : ''}!</p>
+        <p>${gameState.player2.name} uses ${p2Move} for ${p2Result.power.toFixed(1)} damage${p2Result.isCritical ? ' (Critical)' : ''}!</p>
+      `;
+
+      // Play Animations
+      playAttackAnimation(p1Move, document.getElementById('player1Card'), p1Result.isCritical);
+      playAttackAnimation(p2Move, document.getElementById('player2Card'), p2Result.isCritical);
+
+      updateHPBars();
+
+      // Clear Inputs
+      document.getElementById('player1MoveInput').value = '';
+      document.getElementById('player2MoveInput').value = '';
+      document.getElementById('player1Power').textContent = '0';
+      document.getElementById('player2Power').textContent = '0';
+      document.getElementById('player1Synergy').textContent = '';
+      document.getElementById('player2Synergy').textContent = '';
+      showMovePreview(1, '');
+      showMovePreview(2, '');
+
+      // Increment Turn
+      gameState.currentTurn++;
+      startTurnTimer();
+
+      // Check for Game Over
+      if (gameState.player1.hp <= 0 || gameState.player2.hp <= 0) {
+        clearInterval(turnTimerInterval);
+        const winner = gameState.player1.hp > 0 ? gameState.player1 : gameState.player2;
+        document.getElementById('battleScreen').classList.add('hidden');
+        document.getElementById('winnerScreen').classList.remove('hidden');
+        document.getElementById('winnerText').textContent = `${winner.name} Wins!`;
+        document.getElementById('winnerCardName').textContent = `${winner.name} (${winner.rank})`;
+        document.getElementById('winnerAvatar').style.background = `url('metallic_warrior.png') center/cover`;
+        document.getElementById('winnerCard').style.backgroundImage = `url('${rankWallpapers[winner.rank]}')`;
+        document.getElementById('winnerHPPercent').textContent = `${Math.round(winner.hp)}%`;
+        document.getElementById('winnerHP').style.width = `${Math.round(winner.hp)}%`;
+        document.getElementById('winnerLastMove').textContent = `Last Move: ${winner.lastMove} (${winner.lastPower.toFixed(1)})`;
+        document.getElementById('winnerCombo').textContent = `Combo: ${winner.combo}`;
+        document.getElementById('winnerSynergy').textContent = `Synergy: ${calculateSynergy(winner.rank, winner.lastMove, winner.combo).text}`;
+        document.getElementById('winnerSummon').textContent = winner.summonedAnimal ? 
+          `Summon: ${winner.summonedAnimal.name} (${winner.summonedAnimal.rarity.charAt(0).toUpperCase() + winner.summonedAnimal.rarity.slice(1)})` : 'No Summon';
+        showWinnerCharacter(winner.name, document.getElementById('winnerCard'));
+        savedCards.push({ ...winner });
+        localStorage.setItem('destinyVault', JSON.stringify(savedCards));
+      }
+    });
+  </script>
+</body>
+</html>
